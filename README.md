@@ -24,7 +24,6 @@ This application provides a simple platform where residents can report incidents
 
 ## 🏗️ Architecture
 
-```text
 Frontend
    ↓
 Spring Boot REST APIs
