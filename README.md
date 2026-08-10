@@ -14,8 +14,6 @@ This application provides a simple platform where residents can report incidents
 - 🔐 User Login
 - 🚨 Report Incident
 - 📋 View Incidents
-- 🔄 Update Incident Status
-- 🗑️ Delete Incident
 
 ## 🛠️ Technology Stack
 
