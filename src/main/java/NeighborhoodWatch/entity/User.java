@@ -1,5 +1,7 @@
 package NeighborhoodWatch.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +31,13 @@ public class User {
 
     @Column(nullable = false)
     private String role;
+
+    private String otp;
+
+    private LocalDateTime otpExpiry;
+
+    @Column(nullable = false)
+    private boolean emailVerified;
 
     public User() {
     }
@@ -79,5 +88,29 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public LocalDateTime getOtpExpiry() {
+        return otpExpiry;
+    }
+
+    public void setOtpExpiry(LocalDateTime otpExpiry) {
+        this.otpExpiry = otpExpiry;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 }
