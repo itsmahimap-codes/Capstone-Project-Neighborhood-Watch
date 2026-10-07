@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Report Incident - Neighborhood Watch</title>
@@ -9,117 +11,1071 @@
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: "Segoe UI", Arial, sans-serif;
+
+            color: #e8faff;
+
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(0, 229, 255, 0.10),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(0, 255, 180, 0.08),
+                    transparent 30%
+                ),
+                #06111c;
+
+            overflow-x: hidden;
+        }
+
+
+        /* ==========================================
+           ANIMATED GRID
+           ========================================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 229, 255, 0.045) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0, 229, 255, 0.045) 1px,
+                    transparent 1px
+                );
+
+            background-size: 45px 45px;
+
+            animation:
+                gridMove 18s linear infinite;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+
+        @keyframes gridMove {
+
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(45px, 45px);
+            }
+
+        }
+
+
+        /* ==========================================
+           FLOATING ORBS
+           ========================================== */
+
+        .orb {
+
+            position: fixed;
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            z-index: 0;
+
+            filter: blur(2px);
+        }
+
+
+        .orb-one {
+
+            width: 240px;
+            height: 240px;
+
+            top: 80px;
+            left: -100px;
+
+            background:
+                rgba(0, 229, 255, 0.08);
+
+            animation:
+                floatOne 8s ease-in-out infinite;
+        }
+
+
+        .orb-two {
+
+            width: 320px;
+            height: 320px;
+
+            right: -130px;
+            bottom: -130px;
+
+            background:
+                rgba(0, 255, 180, 0.06);
+
+            animation:
+                floatTwo 10s ease-in-out infinite;
+        }
+
+
+        @keyframes floatOne {
+
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(35px);
+            }
+
+        }
+
+
+        @keyframes floatTwo {
+
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(-30px, -25px);
+            }
+
+        }
+
+
+        /* ==========================================
+           NAVBAR
+           ========================================== */
+
+        .navbar-custom {
+
+            position: relative;
+
+            z-index: 10;
+
+            background:
+                rgba(3, 14, 25, 0.78);
+
+            backdrop-filter:
+                blur(18px);
+
+            border-bottom:
+                1px solid rgba(0, 229, 255, 0.15);
+
+            box-shadow:
+                0 5px 25px rgba(0, 0, 0, 0.25);
+        }
+
+
+        .brand {
+
+            color: #e9fbff !important;
+
+            font-size: 1.15rem;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        .brand-shield {
+
+            display: inline-flex;
+
+            width: 40px;
+            height: 40px;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            margin-right: 8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #00d9ff,
+                    #00a88f
+                );
+
+            box-shadow:
+                0 0 18px
+                rgba(0, 229, 255, 0.45);
+        }
+
+
+        .nav-btn {
+
+            border:
+                1px solid rgba(0, 229, 255, 0.35);
+
+            color: #dffaff;
+
+            background:
+                rgba(0, 229, 255, 0.05);
+
+            border-radius: 10px;
+
+            padding: 8px 16px;
+
+            transition: 0.25s;
+        }
+
+
+        .nav-btn:hover {
+
+            color: white;
+
+            border-color: #00e5ff;
+
+            background:
+                rgba(0, 229, 255, 0.12);
+
+            box-shadow:
+                0 0 18px
+                rgba(0, 229, 255, 0.18);
+        }
+
+
+        /* ==========================================
+           MAIN CONTAINER
+           ========================================== */
+
+        .page-container {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 850px;
+
+            margin: auto;
+
+            padding:
+                55px 20px 70px;
+        }
+
+
+        /* ==========================================
+           HEADER
+           ========================================== */
+
+        .page-header {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .security-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                7px 15px;
+
+            border-radius: 30px;
+
+            border:
+                1px solid rgba(0, 229, 255, 0.28);
+
+            background:
+                rgba(0, 229, 255, 0.06);
+
+            color: #6fefff;
+
+            font-size: 0.8rem;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 16px;
+        }
+
+
+        .status-dot {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background:
+                #00e5a0;
+
+            box-shadow:
+                0 0 10px #00e5a0;
+        }
+
+
+        .page-header h1 {
+
+            color: #effcff;
+
+            font-size:
+                clamp(2rem, 5vw, 3rem);
+
+            font-weight: 750;
+
+            margin-bottom: 10px;
+        }
+
+
+        .page-header h1 span {
+
+            color: #00e5ff;
+
+            text-shadow:
+                0 0 20px
+                rgba(0, 229, 255, 0.25);
+        }
+
+
+        .page-header p {
+
+            color: #78939e;
+
+            margin: 0;
+        }
+
+
+        /* ==========================================
+           FORM CARD
+           ========================================== */
+
+        .report-card {
+
+            padding: 32px;
+
+            border-radius: 22px;
+
+            background:
+                rgba(8, 24, 38, 0.78);
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.14);
+
+            backdrop-filter:
+                blur(18px);
+
+            box-shadow:
+                0 25px 60px
+                rgba(0, 0, 0, 0.25);
+        }
+
+
+        .form-label {
+
+            color: #bfeaf0;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+
+        .form-control,
+        .form-select {
+
+            color: #e8faff !important;
+
+            background:
+                rgba(3, 17, 28, 0.85) !important;
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.14) !important;
+
+            border-radius: 11px;
+
+            padding:
+                12px 14px;
+        }
+
+
+        .form-control::placeholder {
+
+            color: #56717d;
+        }
+
+
+        .form-control:focus,
+        .form-select:focus {
+
+            border-color:
+                rgba(0, 229, 255, 0.55) !important;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(0, 229, 255, 0.08) !important;
+        }
+
+
+        .form-select option {
+
+            background: #071722;
+
+            color: #e8faff;
+        }
+
+
+        /* ==========================================
+           LOCATION SECTION
+           ========================================== */
+
+        .location-box {
+
+            padding: 16px;
+
+            border-radius: 15px;
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.12);
+
+            background:
+                rgba(0, 229, 255, 0.025);
+        }
+
+
+        .location-button {
+
+            width: 100%;
+
+            padding: 11px 16px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.35);
+
+            background:
+                rgba(0, 229, 255, 0.06);
+
+            color: #aeeaf1;
+
+            font-weight: 600;
+
+            transition: 0.25s;
+        }
+
+
+        .location-button:hover {
+
+            color: white;
+
+            border-color:
+                #00e5ff;
+
+            background:
+                rgba(0, 229, 255, 0.12);
+
+            box-shadow:
+                0 0 18px
+                rgba(0, 229, 255, 0.12);
+        }
+
+
+        .location-button:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+
+        .coordinates {
+
+            display: none;
+
+            margin-top: 13px;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 255, 170, 0.05);
+
+            border:
+                1px solid
+                rgba(0, 255, 170, 0.14);
+
+            color: #8ff5d0;
+
+            font-size: 0.85rem;
+        }
+
+
+        .location-status {
+
+            margin-top: 10px;
+
+            font-size: 0.82rem;
+
+            color: #718c97;
+        }
+
+
+        /* ==========================================
+           IMAGE UPLOAD
+           ========================================== */
+
+        .upload-box {
+
+            padding: 20px;
+
+            border-radius: 14px;
+
+            border:
+                1px dashed
+                rgba(0, 229, 255, 0.25);
+
+            background:
+                rgba(0, 229, 255, 0.025);
+
+            text-align: center;
+        }
+
+
+        .upload-box input {
+
+            color: #8ca6af;
+
+            margin-top: 8px;
+        }
+
+
+        .upload-hint {
+
+            color: #637e88;
+
+            font-size: 0.78rem;
+
+            margin-top: 7px;
+        }
+
+
+        #imagePreview {
+
+            display: none;
+
+            max-width: 100%;
+
+            max-height: 280px;
+
+            margin:
+                15px auto 0;
+
+            border-radius: 12px;
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.18);
+        }
+
+
+        /* ==========================================
+           SUBMIT BUTTON
+           ========================================== */
+
+        .submit-button {
+
+            width: 100%;
+
+            border: none;
+
+            border-radius: 12px;
+
+            padding: 14px;
+
+            font-weight: 700;
+
+            font-size: 1rem;
+
+            color: #00131a;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00e5ff,
+                    #00d6a0
+                );
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 229, 255, 0.13);
+
+            transition: 0.25s;
+        }
+
+
+        .submit-button:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(0, 229, 255, 0.22);
+        }
+
+
+        .submit-button:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+        /* ==========================================
+           SECURITY NOTE
+           ========================================== */
+
+        .security-note {
+
+            margin-top: 22px;
+
+            padding: 13px 15px;
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 229, 255, 0.035);
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.09);
+
+            color: #688590;
+
+            font-size: 0.78rem;
+
+            line-height: 1.6;
+        }
+
+
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
+
+        @media (max-width: 600px) {
+
+            .page-container {
+
+                padding:
+                    35px 15px 50px;
+            }
+
+
+            .report-card {
+
+                padding: 22px 18px;
+            }
+
+
+            .brand {
+
+                font-size: 0.9rem;
+            }
+
+
+            .brand-shield {
+
+                width: 34px;
+                height: 34px;
+            }
+
+
+            .nav-btn {
+
+                padding:
+                    7px 10px;
+
+                font-size: 0.78rem;
+            }
+
+        }
+
+    </style>
+
 </head>
 
-<body class="bg-light">
 
-<nav class="navbar navbar-dark bg-dark">
+<body>
+
+
+<!-- BACKGROUND -->
+
+<div class="orb orb-one"></div>
+
+<div class="orb orb-two"></div>
+
+
+<!-- ==========================================
+     NAVBAR
+     ========================================== -->
+
+<nav class="navbar navbar-custom">
+
     <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">
-            🛡️ Neighborhood Watch
+
+        <a
+            class="navbar-brand brand fw-bold"
+            href="index.html">
+
+            <span class="brand-shield">
+                🛡️
+            </span>
+
+            Neighborhood Watch
+
         </a>
 
-        <a href="incidents.html" class="btn btn-outline-light">
+
+        <a
+            href="incidents.html"
+            class="btn nav-btn">
+
             View Incidents
+
         </a>
+
     </div>
+
 </nav>
 
-<div class="container py-5">
 
-    <div class="row justify-content-center">
+<!-- ==========================================
+     MAIN
+     ========================================== -->
 
-        <div class="col-md-7">
+<div class="page-container">
 
-            <div class="card shadow">
 
-                <div class="card-body p-4">
+    <!-- HEADER -->
 
-                    <h2 class="text-center mb-4">
-                        🚨 Report an Incident
-                    </h2>
+    <div class="page-header">
 
-                    <p class="text-muted text-center">
-                        Help keep your neighborhood safe by reporting an incident.
-                    </p>
+        <div class="security-badge">
 
-                    <form id="incidentForm">
+            <span class="status-dot"></span>
 
-                        <!-- Title -->
-                        <div class="mb-3">
-                            <label class="form-label">Incident Title</label>
+            Community Safety Network
 
-                            <input
-                                type="text"
-                                id="title"
-                                class="form-control"
-                                placeholder="Example: Street light not working"
-                                required>
-                        </div>
+        </div>
 
-                        <!-- Type -->
-                        <div class="mb-3">
-                            <label class="form-label">Incident Type</label>
 
-                            <select id="incidentType" class="form-select" required>
+        <h1>
 
-                                <option value="">Select incident type</option>
+            Report an
+            <span>Incident</span>
 
-                                <option value="Theft">Theft</option>
-                                <option value="Accident">Accident</option>
-                                <option value="Fire">Fire</option>
-                                <option value="Suspicious Activity">
-                                    Suspicious Activity
-                                </option>
-                                <option value="Public Safety">
-                                    Public Safety
-                                </option>
-                                <option value="Other">Other</option>
+        </h1>
 
-                            </select>
-                        </div>
 
-                        <!-- Location -->
-                        <div class="mb-3">
-                            <label class="form-label">Location</label>
+        <p>
 
-                            <input
-                                type="text"
-                                id="location"
-                                class="form-control"
-                                placeholder="Enter incident location"
-                                required>
-                        </div>
+            Help keep your neighborhood safe by reporting
+            incidents quickly and accurately.
 
-                        <!-- Description -->
-                        <div class="mb-3">
-                            <label class="form-label">Description</label>
+        </p>
 
-                            <textarea
-                                id="description"
-                                class="form-control"
-                                rows="5"
-                                placeholder="Describe what happened..."
-                                required></textarea>
-                        </div>
+    </div>
 
-                        <button
-                            type="submit"
-                            class="btn btn-danger w-100">
 
-                            🚨 Submit Incident
+    <!-- FORM CARD -->
 
-                        </button>
+    <div class="report-card">
 
-                    </form>
 
-                    <div id="message" class="mt-3"></div>
+        <form id="incidentForm">
+
+
+            <!-- TITLE -->
+
+            <div class="mb-4">
+
+                <label
+                    class="form-label"
+                    for="title">
+
+                    Incident Title
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="title"
+                    class="form-control"
+                    placeholder="Example: Street light not working"
+                    required>
+
+            </div>
+
+
+            <!-- INCIDENT TYPE -->
+
+            <div class="mb-4">
+
+                <label
+                    class="form-label"
+                    for="incidentType">
+
+                    Incident Type
+
+                </label>
+
+
+                <select
+                    id="incidentType"
+                    class="form-select"
+                    required>
+
+                    <option value="">
+                        Select incident type
+                    </option>
+
+                    <option value="Theft">
+                        Theft
+                    </option>
+
+                    <option value="Accident">
+                        Accident
+                    </option>
+
+                    <option value="Fire">
+                        Fire
+                    </option>
+
+                    <option value="Suspicious Activity">
+                        Suspicious Activity
+                    </option>
+
+                    <option value="Public Safety">
+                        Public Safety
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- LOCATION -->
+
+            <div class="mb-4">
+
+                <label
+                    class="form-label">
+
+                    📍 Incident Location
+
+                </label>
+
+
+                <div class="location-box">
+
+
+                    <input
+                        type="text"
+                        id="location"
+                        class="form-control"
+                        placeholder="Enter incident location"
+                        required>
+
+
+                    <button
+                        type="button"
+                        id="locationButton"
+                        class="location-button mt-3">
+
+                        📍 Use My Current Location
+
+                    </button>
+
+
+                    <div
+                        id="locationStatus"
+                        class="location-status">
+
+                        You can enter the location manually
+                        or use your current location.
+
+                    </div>
+
+
+                    <div
+                        id="coordinates"
+                        class="coordinates">
+
+                        📍 Coordinates detected
+
+                        <br>
+
+                        Latitude:
+                        <strong id="latitudeText"></strong>
+
+                        <br>
+
+                        Longitude:
+                        <strong id="longitudeText"></strong>
+
+                    </div>
+
 
                 </div>
 
             </div>
 
+
+            <!-- DESCRIPTION -->
+
+            <div class="mb-4">
+
+                <label
+                    class="form-label"
+                    for="description">
+
+                    Description
+
+                </label>
+
+
+                <textarea
+                    id="description"
+                    class="form-control"
+                    rows="5"
+                    placeholder="Describe what happened..."
+                    required></textarea>
+
+            </div>
+
+
+            <!-- IMAGE -->
+
+            <div class="mb-4">
+
+                <label
+                    class="form-label">
+
+                    📷 Evidence Image
+                    <span style="color:#607984;">
+                        (Optional)
+                    </span>
+
+                </label>
+
+
+                <div class="upload-box">
+
+                    <div style="font-size:2rem;">
+                        📷
+                    </div>
+
+
+                    <div
+                        style="color:#bfeaf0;
+                               margin-top:5px;">
+
+                        Attach an image as evidence
+
+                    </div>
+
+
+                    <input
+                        type="file"
+                        id="image"
+                        class="form-control"
+                        accept="image/jpeg,image/png,image/gif,image/webp">
+
+
+                    <div class="upload-hint">
+
+                        JPG, PNG, GIF or WEBP • Maximum 5 MB
+
+                    </div>
+
+
+                    <img
+                        id="imagePreview"
+                        alt="Image Preview">
+
+                </div>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                id="submitButton"
+                class="submit-button">
+
+                🚨 Submit Incident
+
+            </button>
+
+
+        </form>
+
+
+        <!-- MESSAGE -->
+
+        <div id="message" class="mt-3"></div>
+
+
+        <!-- SECURITY NOTE -->
+
+        <div class="security-note">
+
+            🔐 <strong>Security:</strong>
+            Your report is securely submitted to the
+            Neighborhood Watch system. Location coordinates
+            are captured only when you choose to use the
+            current-location option.
+
         </div>
+
 
     </div>
 
@@ -128,68 +1084,457 @@
 
 <script>
 
-document.getElementById("incidentForm").addEventListener("submit", function(event) {
 
-    event.preventDefault();
+/* ==========================================
+   LOCATION VARIABLES
+   ========================================== */
 
-    const incident = {
+let latitude = null;
 
-        title: document.getElementById("title").value,
+let longitude = null;
 
-        description: document.getElementById("description").value,
 
-        location: document.getElementById("location").value,
+/* ==========================================
+   CURRENT LOCATION
+   ========================================== */
 
-        incidentType: document.getElementById("incidentType").value
+document
+    .getElementById("locationButton")
+    .addEventListener("click", function() {
 
-    };
 
-    fetch("/incidents/report", {
+        const button =
+            document.getElementById("locationButton");
 
-        method: "POST",
+        const status =
+            document.getElementById("locationStatus");
 
-        headers: {
-            "Content-Type": "application/json"
-        },
 
-        body: JSON.stringify(incident)
+        if (!navigator.geolocation) {
 
-    })
+            status.innerHTML =
+                "❌ Geolocation is not supported by your browser.";
 
-    .then(response => {
-
-        if (!response.ok) {
-            throw new Error("Failed to report incident");
+            return;
         }
 
-        return response.json();
 
-    })
+        button.disabled = true;
 
-    .then(data => {
+        button.innerHTML =
+            "📍 Detecting Location...";
 
-        document.getElementById("message").innerHTML =
-            '<div class="alert alert-success">' +
-            '<strong>Incident reported successfully!</strong><br>' +
-            'Your report has been submitted and is currently Pending.' +
-            '</div>';
 
-        document.getElementById("incidentForm").reset();
+        status.innerHTML =
+            "Please allow location access in your browser.";
 
-    })
 
-    .catch(error => {
+        navigator.geolocation.getCurrentPosition(
 
-        document.getElementById("message").innerHTML =
-            '<div class="alert alert-danger">' +
-            'Unable to submit the incident. Please make sure the server is running.' +
-            '</div>';
+            function(position) {
+
+                latitude =
+                    position.coords.latitude;
+
+                longitude =
+                    position.coords.longitude;
+
+
+                document
+                    .getElementById("latitudeText")
+                    .textContent =
+                    latitude.toFixed(6);
+
+
+                document
+                    .getElementById("longitudeText")
+                    .textContent =
+                    longitude.toFixed(6);
+
+
+                document
+                    .getElementById("coordinates")
+                    .style.display =
+                    "block";
+
+
+                status.innerHTML =
+                    "✅ Current location detected successfully.";
+
+
+                button.disabled = false;
+
+                button.innerHTML =
+                    "📍 Location Detected";
+
+
+            },
+
+
+            function(error) {
+
+                button.disabled = false;
+
+                button.innerHTML =
+                    "📍 Use My Current Location";
+
+
+                if (error.code === 1) {
+
+                    status.innerHTML =
+                        "❌ Location permission was denied. You can enter the location manually.";
+
+                }
+
+                else if (error.code === 2) {
+
+                    status.innerHTML =
+                        "❌ Your location could not be determined. Please try again.";
+
+                }
+
+                else if (error.code === 3) {
+
+                    status.innerHTML =
+                        "❌ Location request timed out. Please try again.";
+
+                }
+
+                else {
+
+                    status.innerHTML =
+                        "❌ Unable to detect your location.";
+
+                }
+
+            },
+
+            {
+                enableHighAccuracy: true,
+
+                timeout: 10000,
+
+                maximumAge: 0
+
+            }
+
+        );
 
     });
 
-});
+
+/* ==========================================
+   IMAGE PREVIEW
+   ========================================== */
+
+document
+    .getElementById("image")
+    .addEventListener("change", function() {
+
+
+        const file = this.files[0];
+
+        const preview =
+            document.getElementById("imagePreview");
+
+
+        if (!file) {
+
+            preview.style.display =
+                "none";
+
+            preview.src = "";
+
+            return;
+        }
+
+
+        const allowedTypes = [
+
+            "image/jpeg",
+
+            "image/png",
+
+            "image/gif",
+
+            "image/webp"
+
+        ];
+
+
+        if (!allowedTypes.includes(file.type)) {
+
+            alert(
+                "Only JPG, PNG, GIF and WEBP images are allowed."
+            );
+
+            this.value = "";
+
+            preview.style.display =
+                "none";
+
+            return;
+        }
+
+
+        if (file.size > 5 * 1024 * 1024) {
+
+            alert(
+                "Image size must be less than 5 MB."
+            );
+
+            this.value = "";
+
+            preview.style.display =
+                "none";
+
+            return;
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload = function(event) {
+
+            preview.src =
+                event.target.result;
+
+            preview.style.display =
+                "block";
+
+        };
+
+
+        reader.readAsDataURL(file);
+
+    });
+
+
+/* ==========================================
+   FORM SUBMISSION
+   ========================================== */
+
+document
+    .getElementById("incidentForm")
+    .addEventListener("submit", async function(event) {
+
+
+        event.preventDefault();
+
+
+        const submitButton =
+            document.getElementById("submitButton");
+
+        const message =
+            document.getElementById("message");
+
+
+        const incident = {
+
+            title:
+                document.getElementById("title").value,
+
+            description:
+                document.getElementById("description").value,
+
+            location:
+                document.getElementById("location").value,
+
+            incidentType:
+                document.getElementById("incidentType").value,
+
+            latitude:
+                latitude,
+
+            longitude:
+                longitude
+
+        };
+
+
+        const imageFile =
+            document.getElementById("image").files[0];
+
+
+        submitButton.disabled = true;
+
+        submitButton.innerHTML =
+            "⏳ Submitting Incident...";
+
+
+        message.innerHTML = "";
+
+
+        try {
+
+
+            /* ======================================
+               STEP 1 — CREATE INCIDENT
+               ====================================== */
+
+            const response =
+                await fetch(
+                    "/incidents/report",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(incident)
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to report incident"
+                );
+
+            }
+
+
+            const savedIncident =
+                await response.json();
+
+
+            /* ======================================
+               STEP 2 — UPLOAD IMAGE
+               ====================================== */
+
+            if (imageFile) {
+
+
+                const formData =
+                    new FormData();
+
+
+                formData.append(
+                    "image",
+                    imageFile
+                );
+
+
+                const imageResponse =
+                    await fetch(
+                        "/incidents/"
+                        + savedIncident.incidentId
+                        + "/image",
+                        {
+
+                            method: "POST",
+
+                            body:
+                                formData
+
+                        }
+                    );
+
+
+                if (!imageResponse.ok) {
+
+                    throw new Error(
+                        "Incident saved, but image upload failed."
+                    );
+
+                }
+
+            }
+
+
+            /* ======================================
+               SUCCESS
+               ====================================== */
+
+            message.innerHTML =
+
+                '<div class="alert alert-success">' +
+
+                '<strong>✅ Incident reported successfully!</strong><br>' +
+
+                'Your report has been submitted and is currently Pending.' +
+
+                '</div>';
+
+
+            document
+                .getElementById("incidentForm")
+                .reset();
+
+
+            document
+                .getElementById("imagePreview")
+                .style.display =
+                "none";
+
+
+            document
+                .getElementById("imagePreview")
+                .src = "";
+
+
+            document
+                .getElementById("coordinates")
+                .style.display =
+                "none";
+
+
+            latitude = null;
+
+            longitude = null;
+
+
+            document
+                .getElementById("locationStatus")
+                .innerHTML =
+                "You can enter the location manually or use your current location.";
+
+
+            document
+                .getElementById("locationButton")
+                .innerHTML =
+                "📍 Use My Current Location";
+
+
+        }
+
+        catch (error) {
+
+
+            message.innerHTML =
+
+                '<div class="alert alert-danger">' +
+
+                '❌ ' +
+                error.message +
+
+                '</div>';
+
+        }
+
+
+        finally {
+
+            submitButton.disabled = false;
+
+            submitButton.innerHTML =
+                "🚨 Submit Incident";
+
+        }
+
+    });
+
 
 </script>
+
 
 </body>
 </html>

@@ -1,403 +1,1211 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Register - Neighborhood Watch</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
     <style>
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
         }
 
         body {
+            margin: 0;
             min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background:
+                radial-gradient(circle at 15% 15%, rgba(0, 170, 255, .16), transparent 30%),
+                radial-gradient(circle at 85% 80%, rgba(0, 255, 200, .10), transparent 30%),
+                #07111f;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* BACKGROUND */
+
+        .background {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .grid {
+            position: absolute;
+            inset: 0;
+
+            background-image:
+                linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+
+            background-size: 55px 55px;
+
+            transform:
+                perspective(500px)
+                rotateX(55deg)
+                scale(1.5);
+
+            transform-origin: center bottom;
+
+            opacity: .55;
+
+            animation: gridMove 12s linear infinite;
+        }
+
+        @keyframes gridMove {
+
+            from {
+                transform:
+                    perspective(500px)
+                    rotateX(55deg)
+                    scale(1.5)
+                    translateY(0);
+            }
+
+            to {
+                transform:
+                    perspective(500px)
+                    rotateX(55deg)
+                    scale(1.5)
+                    translateY(55px);
+            }
+
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: .5;
+            animation: floatOrb 7s ease-in-out infinite;
+        }
+
+        .orb1 {
+            width: 200px;
+            height: 200px;
+            background: rgba(0,174,255,.13);
+            top: 8%;
+            left: 7%;
+        }
+
+        .orb2 {
+            width: 240px;
+            height: 240px;
+            background: rgba(0,255,200,.08);
+            right: 4%;
+            bottom: 5%;
+            animation-delay: 2s;
+        }
+
+        @keyframes floatOrb {
+
+            0%,100% {
+                transform: translate(0,0);
+            }
+
+            50% {
+                transform: translate(30px,-25px);
+            }
+
+        }
+
+        /* NETWORK NODES */
+
+        .node {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            background: #38d9ff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #38d9ff;
+            animation: pulseNode 2.5s infinite;
+        }
+
+        .node1 {
+            top: 18%;
+            left: 20%;
+        }
+
+        .node2 {
+            top: 30%;
+            right: 18%;
+            animation-delay: .7s;
+        }
+
+        .node3 {
+            bottom: 18%;
+            left: 23%;
+            animation-delay: 1.3s;
+        }
+
+        .node4 {
+            bottom: 28%;
+            right: 25%;
+            animation-delay: 1.9s;
+        }
+
+        @keyframes pulseNode {
+
+            0%,100% {
+                transform: scale(1);
+                opacity: .5;
+            }
+
+            50% {
+                transform: scale(2);
+                opacity: 1;
+            }
+
+        }
+
+        /* PAGE */
+
+        .page {
+            position: relative;
+            z-index: 2;
+
+            min-height: 100vh;
+
             display: flex;
-            justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #0f172a, #1e3a5f);
+            justify-content: center;
+
+            padding: 45px 20px;
         }
 
-        .register-container {
-            width: 420px;
-            background: white;
-            padding: 35px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        .content {
+
+            width: 100%;
+            max-width: 1050px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 450px;
+
+            gap: 70px;
+
+            align-items: center;
         }
 
-        .logo {
-            text-align: center;
-            font-size: 42px;
+        /* INTRO */
+
+        .intro {
+            animation: slideLeft .9s ease;
+        }
+
+        @keyframes slideLeft {
+
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+        }
+
+        .shield {
+
+            width: 90px;
+            height: 90px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 47px;
+
+            border-radius: 26px;
+
+            background: rgba(255,255,255,.07);
+
+            border:
+                1px solid
+                rgba(100,220,255,.25);
+
+            box-shadow:
+                0 0 35px rgba(0,190,255,.16),
+                inset 0 0 25px rgba(255,255,255,.04);
+
+            margin-bottom: 25px;
+
+            animation:
+                shieldGlow
+                3s ease-in-out
+                infinite;
+        }
+
+        @keyframes shieldGlow {
+
+            0%,100% {
+                box-shadow:
+                    0 0 25px rgba(0,190,255,.15),
+                    inset 0 0 20px rgba(255,255,255,.03);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 50px rgba(0,190,255,.35),
+                    inset 0 0 25px rgba(255,255,255,.06);
+            }
+
+        }
+
+        .brand {
+
+            font-size: 15px;
+            letter-spacing: 4px;
+
+            color: #55dfff;
+
+            font-weight: 600;
+
             margin-bottom: 10px;
         }
 
-        h1 {
-            text-align: center;
-            color: #0f172a;
-            margin-bottom: 8px;
+        .intro h1 {
+
+            font-size:
+                clamp(40px,5vw,63px);
+
+            line-height: 1;
+
+            font-weight: 800;
+
+            margin-bottom: 22px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #70e4ff
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .subtitle {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 25px;
+        .intro p {
+
+            max-width: 520px;
+
+            color: #9eb2c9;
+
+            font-size: 17px;
+
+            line-height: 1.7;
         }
 
-        .form-group {
-            margin-bottom: 17px;
+        .feature-list {
+
+            margin-top: 28px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
         }
 
-        label {
-            display: block;
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            color: #a8bfd3;
+
+            font-size: 14px;
+        }
+
+        .feature-icon {
+
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background:
+                rgba(48,210,255,.08);
+
+            border:
+                1px solid
+                rgba(48,210,255,.15);
+        }
+
+        /* REGISTER CARD */
+
+        .register-card {
+
+            background:
+                rgba(13,27,43,.78);
+
+            border:
+                1px solid
+                rgba(150,220,255,.15);
+
+            backdrop-filter:
+                blur(20px);
+
+            -webkit-backdrop-filter:
+                blur(20px);
+
+            border-radius: 28px;
+
+            padding: 38px;
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,.35),
+                inset 0 1px rgba(255,255,255,.08);
+
+            animation:
+                cardAppear
+                .9s ease;
+        }
+
+        @keyframes cardAppear {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(35px)
+                    scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+        }
+
+        .card-heading h2 {
+
+            font-size: 28px;
+
+            font-weight: 700;
+
             margin-bottom: 7px;
-            font-weight: bold;
-            color: #334155;
         }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
+        .card-heading p {
+
+            color: #849bb1;
+
+            font-size: 14px;
+
+            margin-bottom: 27px;
         }
 
-        input:focus {
-            border-color: #2563eb;
+        .form-label {
+
+            color: #b9cadb;
+
+            font-size: 13px;
+
+            font-weight: 600;
         }
 
-        button {
-            width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: 8px;
-            background: #2563eb;
+        .input-wrapper {
+
+            position: relative;
+        }
+
+        .input-icon {
+
+            position: absolute;
+
+            left: 15px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            font-size: 17px;
+
+            z-index: 2;
+        }
+
+        .form-control {
+
+            height: 49px;
+
+            padding-left: 47px;
+
+            padding-right: 48px;
+
+            border-radius: 14px;
+
+            border:
+                1px solid
+                rgba(160,200,225,.15);
+
+            background:
+                rgba(255,255,255,.045);
+
             color: white;
-            font-size: 16px;
-            font-weight: bold;
+
+            transition: .3s;
+        }
+
+        .form-control::placeholder {
+            color: #63788c;
+        }
+
+        .form-control:focus {
+
+            background:
+                rgba(255,255,255,.07);
+
+            border-color:
+                #36cfff;
+
+            color: white;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(54,207,255,.08);
+        }
+
+        .eye-button {
+
+            position: absolute;
+
+            right: 12px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            color: #7890a5;
+
+            font-size: 17px;
+
             cursor: pointer;
+
+            transition: .2s;
         }
 
-        button:hover {
-            background: #1d4ed8;
+        .eye-button:hover {
+
+            color: #50d9ff;
+
+            transform:
+                translateY(-50%)
+                scale(1.15);
         }
 
-        button:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
+        .register-btn {
+
+            position: relative;
+
+            width: 100%;
+
+            height: 54px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #08aeea,
+                    #16d9c3
+                );
+
+            color: #03121c;
+
+            font-weight: 800;
+
+            font-size: 15px;
+
+            letter-spacing: .5px;
+
+            overflow: hidden;
+
+            transition: .3s;
+
+            margin-top: 8px;
         }
 
-        .message {
-            margin-top: 15px;
-            text-align: center;
+        .register-btn::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: -100%;
+
+            width: 70%;
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,.4),
+                    transparent
+                );
+
+            transform:
+                skewX(-20deg);
+
+            transition: .6s;
+        }
+
+        .register-btn:hover::before {
+            left: 130%;
+        }
+
+        .register-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(0,200,240,.22);
+        }
+
+        .register-btn:active {
+            transform: scale(.98);
+        }
+
+        #message {
             font-size: 14px;
         }
 
         .login-link {
-            margin-top: 20px;
+
             text-align: center;
-            color: #64748b;
+
+            color: #71889d;
+
+            font-size: 14px;
+
+            margin-top: 22px;
         }
 
         .login-link a {
-            color: #2563eb;
+
+            color: #55dfff;
+
             text-decoration: none;
-            font-weight: bold;
+
+            font-weight: 700;
         }
 
         .login-link a:hover {
             text-decoration: underline;
         }
 
+        .back-home {
+
+            position: absolute;
+
+            top: 25px;
+            left: 30px;
+
+            color: #8fa6bb;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: .2s;
+        }
+
+        .back-home:hover {
+            color: white;
+        }
+
+        /* PASSWORD STRENGTH */
+
+        .password-strength {
+
+            height: 4px;
+
+            width: 100%;
+
+            background:
+                rgba(255,255,255,.08);
+
+            border-radius: 5px;
+
+            margin-top: 8px;
+
+            overflow: hidden;
+        }
+
+        .strength-bar {
+
+            height: 100%;
+
+            width: 0%;
+
+            border-radius: 5px;
+
+            transition: .3s;
+
+            background: #36cfff;
+        }
+
+        .strength-text {
+
+            font-size: 11px;
+
+            color: #71889d;
+
+            margin-top: 5px;
+
+        }
+
+        @media (max-width: 850px) {
+
+            .content {
+
+                grid-template-columns: 1fr;
+
+                max-width: 480px;
+            }
+
+            .intro {
+
+                text-align: center;
+            }
+
+            .intro p {
+
+                margin-left: auto;
+
+                margin-right: auto;
+            }
+
+            .shield {
+
+                margin-left: auto;
+
+                margin-right: auto;
+            }
+
+            .feature-list {
+
+                align-items: center;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .page {
+
+                padding:
+                    75px 15px 25px;
+            }
+
+            .register-card {
+
+                padding: 27px 22px;
+
+                border-radius: 22px;
+            }
+
+            .intro h1 {
+                font-size: 42px;
+            }
+
+            .intro p {
+                font-size: 15px;
+            }
+
+        }
+
     </style>
 
 </head>
 
-
 <body>
 
+<div class="background">
 
-<div class="register-container">
+    <div class="grid"></div>
 
-    <div class="logo">
-        🏘️
-    </div>
+    <div class="orb orb1"></div>
 
-    <h1>
-        Neighborhood Watch
-    </h1>
+    <div class="orb orb2"></div>
 
-    <p class="subtitle">
-        Create your account
-    </p>
-
-
-    <form id="registerForm">
-
-
-        <div class="form-group">
-
-            <label for="fullName">
-                Full Name
-            </label>
-
-            <input
-                type="text"
-                id="fullName"
-                placeholder="Enter your full name"
-                required
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label for="email">
-                Email
-            </label>
-
-            <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                required
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label for="password">
-                Password
-            </label>
-
-            <input
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                required
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label for="phoneNumber">
-                Phone Number
-            </label>
-
-            <input
-                type="tel"
-                id="phoneNumber"
-                placeholder="Enter your phone number"
-                required
-            >
-
-        </div>
-
-
-        <button
-            type="submit"
-            id="registerButton">
-
-            Register
-
-        </button>
-
-
-    </form>
-
-
-    <div
-        id="message"
-        class="message">
-    </div>
-
-
-    <div class="login-link">
-
-        Already have an account?
-
-        <a href="login.html">
-            Login here
-        </a>
-
-    </div>
-
+    <div class="node node1"></div>
+    <div class="node node2"></div>
+    <div class="node node3"></div>
+    <div class="node node4"></div>
 
 </div>
 
+<a href="index.html" class="back-home">
+    ← Back to Home
+</a>
+
+<div class="page">
+
+    <div class="content">
+
+        <!-- LEFT -->
+
+        <div class="intro">
+
+            <div class="shield">
+                🛡️
+            </div>
+
+            <div class="brand">
+                NEIGHBORHOOD WATCH
+            </div>
+
+            <h1>
+                Join the<br>
+                Watch.
+            </h1>
+
+            <p>
+                Become part of a connected community
+                working together to report incidents,
+                share information, and improve neighborhood safety.
+            </p>
+
+            <div class="feature-list">
+
+                <div class="feature">
+                    <span class="feature-icon">🚨</span>
+                    Report incidents quickly
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">📍</span>
+                    Help monitor your neighborhood
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">🔐</span>
+                    Secure account verification
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- REGISTER CARD -->
+
+        <div class="register-card">
+
+            <div class="card-heading">
+
+                <h2>Create account 🛡️</h2>
+
+                <p>
+                    Join your community safety network
+                </p>
+
+            </div>
+
+            <form id="registerForm">
+
+                <!-- FULL NAME -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Full Name
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            👤
+                        </span>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            class="form-control"
+                            placeholder="Enter your full name"
+                            required>
+
+                    </div>
+
+                </div>
+
+                <!-- EMAIL -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Email Address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            📧
+                        </span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-control"
+                            placeholder="you@example.com"
+                            required>
+
+                    </div>
+
+                </div>
+
+                <!-- PHONE -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Phone Number
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            📱
+                        </span>
+
+                        <input
+                            type="tel"
+                            id="phoneNumber"
+                            class="form-control"
+                            placeholder="Enter phone number"
+                            required>
+
+                    </div>
+
+                </div>
+
+                <!-- PASSWORD -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            placeholder="Create a password"
+                            required>
+
+                        <button
+                            type="button"
+                            class="eye-button"
+                            onclick="togglePassword()"
+                            id="eyeButton">
+                            👁️
+                        </button>
+
+                    </div>
+
+                    <div class="password-strength">
+
+                        <div
+                            class="strength-bar"
+                            id="strengthBar">
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="strength-text"
+                        id="strengthText">
+                        Use at least 6 characters
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="register-btn"
+                    id="registerButton">
+
+                    CREATE MY ACCOUNT →
+
+                </button>
+
+            </form>
+
+            <div id="message" class="mt-3"></div>
+
+            <div class="login-link">
+
+                Already have an account?
+
+                <a href="login.html">
+                    Sign in
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script>
 
+/* PASSWORD VISIBILITY */
+
+function togglePassword() {
+
+    const password =
+        document.getElementById("password");
+
+    const eyeButton =
+        document.getElementById("eyeButton");
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+        eyeButton.textContent = "🙈";
+
+    } else {
+
+        password.type = "password";
+
+        eyeButton.textContent = "👁️";
+
+    }
+
+}
+
+
+/* PASSWORD STRENGTH */
 
 document
-    .getElementById("registerForm")
-    .addEventListener("submit", function(event) {
+.getElementById("password")
+.addEventListener("input", function() {
 
-        event.preventDefault();
+    const password = this.value;
 
+    const bar =
+        document.getElementById("strengthBar");
 
-        const fullName =
-            document.getElementById("fullName").value;
+    const text =
+        document.getElementById("strengthText");
 
-        const email =
-            document.getElementById("email").value;
+    let strength = 0;
 
-        const password =
-            document.getElementById("password").value;
+    if (password.length >= 6)
+        strength++;
 
-        const phoneNumber =
-            document.getElementById("phoneNumber").value;
+    if (password.length >= 10)
+        strength++;
 
+    if (/[A-Z]/.test(password))
+        strength++;
 
-        const message =
-            document.getElementById("message");
+    if (/[0-9]/.test(password))
+        strength++;
 
-        const registerButton =
-            document.getElementById("registerButton");
+    if (/[^A-Za-z0-9]/.test(password))
+        strength++;
 
+    if (password.length === 0) {
 
-        message.textContent =
-            "Creating your account...";
+        bar.style.width = "0%";
 
-        message.style.color =
-            "#64748b";
+        text.textContent =
+            "Use at least 6 characters";
 
-        registerButton.disabled =
-            true;
+    } else if (strength <= 2) {
 
+        bar.style.width = "35%";
 
-        const user = {
+        text.textContent =
+            "Weak password";
 
-            fullName: fullName,
+    } else if (strength <= 3) {
 
-            email: email,
+        bar.style.width = "65%";
 
-            password: password,
+        text.textContent =
+            "Good password";
 
-            phoneNumber: phoneNumber
+    } else {
 
-        };
+        bar.style.width = "100%";
 
+        text.textContent =
+            "Strong password";
 
-        fetch("/users/register", {
+    }
 
-            method: "POST",
+});
 
-            headers: {
 
-                "Content-Type":
-                    "application/json"
+/* REGISTER */
 
-            },
+document
+.getElementById("registerForm")
+.addEventListener("submit", function(event) {
 
-            body: JSON.stringify(user)
+    event.preventDefault();
 
-        })
+    const fullName =
+        document.getElementById("fullName").value;
 
+    const email =
+        document.getElementById("email").value;
 
-        .then(async response => {
+    const phoneNumber =
+        document.getElementById("phoneNumber").value;
 
-            const text =
-                await response.text();
+    const password =
+        document.getElementById("password").value;
 
+    const button =
+        document.getElementById("registerButton");
 
-            if (!response.ok) {
+    const message =
+        document.getElementById("message");
 
-                throw new Error(
-                    text || "Registration failed"
-                );
+    button.disabled = true;
 
-            }
+    button.textContent =
+        "CREATING ACCOUNT...";
 
+    message.innerHTML = "";
 
-            try {
+    const user = {
 
-                return JSON.parse(text);
+        fullName: fullName,
 
-            } catch {
+        email: email,
 
-                return {
-                    message: text
-                };
+        phoneNumber: phoneNumber,
 
-            }
+        password: password,
 
-        })
+        role: "USER"
 
+    };
 
-        .then(result => {
+    fetch("/users/register", {
 
-            message.textContent =
-                "Registration successful! OTP has been sent to your email.";
+        method: "POST",
 
-            message.style.color =
-                "green";
+        headers: {
+            "Content-Type": "application/json"
+        },
 
+        body: JSON.stringify(user)
 
-            /*
-             * Save the email temporarily
-             * so the OTP page can use it.
-             */
+    })
 
-            sessionStorage.setItem(
-                "verificationEmail",
-                email
-            );
+    .then(response => {
 
+        if (!response.ok) {
 
-            /*
-             * Go to OTP verification page.
-             */
+            return response.text()
+                .then(text => {
 
-            setTimeout(function() {
+                    throw new Error(
+                        text ||
+                        "Registration failed"
+                    );
 
-                window.location.href =
-                    "verify-otp.html";
+                });
 
-            }, 1000);
+        }
 
-        })
+        return response.json();
 
+    })
 
-        .catch(error => {
+    .then(data => {
 
-            console.error(error);
+        message.innerHTML =
+            '<div class="alert alert-success">' +
+            '<strong>✓ Account created!</strong><br>' +
+            'OTP sent to ' +
+            data.email +
+            '. Redirecting to verification...' +
+            '</div>';
 
+        localStorage.setItem(
+            "verificationEmail",
+            data.email
+        );
 
-            message.textContent =
-                error.message ||
-                "Registration failed. Please try again.";
+        setTimeout(function() {
 
-            message.style.color =
-                "red";
+            window.location.href =
+                "verify-otp.html";
 
+        }, 1200);
 
-            registerButton.disabled =
-                false;
+    })
 
-        });
+    .catch(error => {
+
+        message.innerHTML =
+            '<div class="alert alert-danger">' +
+            '⚠️ ' +
+            error.message +
+            '</div>';
+
+        button.disabled = false;
+
+        button.textContent =
+            "CREATE MY ACCOUNT →";
 
     });
 
+});
 
 </script>
 
-
 </body>
-
 </html>

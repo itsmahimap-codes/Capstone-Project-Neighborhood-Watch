@@ -1,189 +1,1038 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Incidents - Neighborhood Watch</title>
+    <title>Incident Command Center - Neighborhood Watch</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
     <style>
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
         }
 
         body {
-            background: #f1f5f9;
+            margin: 0;
             min-height: 100vh;
+
+            font-family: "Segoe UI", Arial, sans-serif;
+
+            color: #e8faff;
+
+            background:
+                radial-gradient(
+                    circle at 10% 15%,
+                    rgba(0, 229, 255, 0.10),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 85%,
+                    rgba(0, 255, 180, 0.07),
+                    transparent 30%
+                ),
+                #06111c;
+
+            overflow-x: hidden;
         }
 
-        header {
-            background: #0f172a;
+
+        /* ==========================================
+           ANIMATED GRID
+           ========================================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 229, 255, 0.045) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0, 229, 255, 0.045) 1px,
+                    transparent 1px
+                );
+
+            background-size: 45px 45px;
+
+            animation:
+                gridMove 18s linear infinite;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+
+        @keyframes gridMove {
+
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(45px, 45px);
+            }
+
+        }
+
+
+        /* ==========================================
+           FLOATING ORBS
+           ========================================== */
+
+        .orb {
+
+            position: fixed;
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            z-index: 0;
+
+            filter: blur(2px);
+        }
+
+
+        .orb-one {
+
+            width: 240px;
+            height: 240px;
+
+            top: 80px;
+            left: -100px;
+
+            background:
+                rgba(0, 229, 255, 0.08);
+
+            animation:
+                floatOne 8s ease-in-out infinite;
+        }
+
+
+        .orb-two {
+
+            width: 320px;
+            height: 320px;
+
+            right: -130px;
+            bottom: -130px;
+
+            background:
+                rgba(0, 255, 180, 0.06);
+
+            animation:
+                floatTwo 10s ease-in-out infinite;
+        }
+
+
+        @keyframes floatOne {
+
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(35px);
+            }
+
+        }
+
+
+        @keyframes floatTwo {
+
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(-30px, -25px);
+            }
+
+        }
+
+
+        /* ==========================================
+           NAVBAR
+           ========================================== */
+
+        .navbar-custom {
+
+            position: relative;
+
+            z-index: 10;
+
+            background:
+                rgba(3, 14, 25, 0.80);
+
+            backdrop-filter:
+                blur(18px);
+
+            border-bottom:
+                1px solid rgba(0, 229, 255, 0.15);
+
+            box-shadow:
+                0 5px 25px rgba(0, 0, 0, 0.25);
+        }
+
+
+        .brand {
+
+            color: #e9fbff !important;
+
+            font-size: 1.1rem;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        .brand-shield {
+
+            display: inline-flex;
+
+            width: 40px;
+            height: 40px;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            margin-right: 8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #00d9ff,
+                    #00a88f
+                );
+
+            box-shadow:
+                0 0 18px
+                rgba(0, 229, 255, 0.45);
+        }
+
+
+        .nav-btn {
+
+            border:
+                1px solid rgba(0, 229, 255, 0.35);
+
+            color: #dffaff;
+
+            background:
+                rgba(0, 229, 255, 0.05);
+
+            border-radius: 10px;
+
+            padding: 8px 15px;
+
+            transition: 0.25s;
+        }
+
+
+        .nav-btn:hover {
+
             color: white;
-            padding: 18px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+
+            border-color: #00e5ff;
+
+            background:
+                rgba(0, 229, 255, 0.12);
+
+            box-shadow:
+                0 0 18px
+                rgba(0, 229, 255, 0.18);
         }
 
-        header h1 {
-            font-size: 24px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .role {
-            background: #2563eb;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-        }
 
         .logout-btn {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 9px 15px;
-            border-radius: 7px;
-            cursor: pointer;
+
+            color: #ffb7b7;
+
+            border-color:
+                rgba(255, 90, 90, 0.25);
         }
+
 
         .logout-btn:hover {
-            background: #b91c1c;
+
+            color: #fff;
+
+            border-color:
+                rgba(255, 90, 90, 0.55);
+
+            background:
+                rgba(255, 70, 70, 0.10);
         }
 
-        .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 30px auto;
+
+        /* ==========================================
+           MAIN
+           ========================================== */
+
+        .main-container {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding:
+                50px 20px 70px;
         }
 
-        .top-section {
-            display: flex;
-            justify-content: space-between;
+
+        /* ==========================================
+           HEADER
+           ========================================== */
+
+        .page-header {
+
+            margin-bottom: 28px;
+        }
+
+
+        .security-badge {
+
+            display: inline-flex;
+
             align-items: center;
-            margin-bottom: 25px;
+
+            gap: 8px;
+
+            padding:
+                7px 14px;
+
+            border-radius: 30px;
+
+            border:
+                1px solid rgba(0, 229, 255, 0.28);
+
+            background:
+                rgba(0, 229, 255, 0.06);
+
+            color: #6fefff;
+
+            font-size: 0.78rem;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 13px;
         }
 
-        .top-section h2 {
-            color: #0f172a;
+
+        .status-dot {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background:
+                #00e5a0;
+
+            box-shadow:
+                0 0 10px #00e5a0;
         }
 
-        .report-btn {
-            background: #2563eb;
+
+        .page-header h1 {
+
+            color: #effcff;
+
+            font-size:
+                clamp(2rem, 5vw, 3rem);
+
+            font-weight: 750;
+
+            margin-bottom: 8px;
+        }
+
+
+        .page-header h1 span {
+
+            color: #00e5ff;
+
+            text-shadow:
+                0 0 20px
+                rgba(0, 229, 255, 0.25);
+        }
+
+
+        .page-header p {
+
+            color: #78939e;
+
+            margin: 0;
+        }
+
+
+        /* ==========================================
+           STAT CARDS
+           ========================================== */
+
+        .stat-card {
+
+            padding: 20px;
+
+            border-radius: 16px;
+
+            background:
+                rgba(8, 24, 38, 0.72);
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.12);
+
+            backdrop-filter:
+                blur(15px);
+
+            height: 100%;
+
+            transition: 0.25s;
+        }
+
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            border-color:
+                rgba(0, 229, 255, 0.28);
+        }
+
+
+        .stat-label {
+
+            color: #718c97;
+
+            font-size: 0.8rem;
+
+            margin-bottom: 5px;
+        }
+
+
+        .stat-number {
+
+            color: #e9fbff;
+
+            font-size: 1.9rem;
+
+            font-weight: 750;
+        }
+
+
+        /* ==========================================
+           FILTER BAR
+           ========================================== */
+
+        .filter-card {
+
+            margin:
+                28px 0;
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(8, 24, 38, 0.72);
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.12);
+
+            backdrop-filter:
+                blur(15px);
+        }
+
+
+        .filter-label {
+
+            color: #718c97;
+
+            font-size: 0.76rem;
+
+            margin-bottom: 6px;
+        }
+
+
+        .form-control,
+        .form-select {
+
+            color: #e8faff !important;
+
+            background:
+                rgba(3, 17, 28, 0.85) !important;
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.14) !important;
+
+            border-radius: 10px;
+        }
+
+
+        .form-control::placeholder {
+
+            color: #526d78;
+        }
+
+
+        .form-control:focus,
+        .form-select:focus {
+
+            border-color:
+                rgba(0, 229, 255, 0.55) !important;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(0, 229, 255, 0.08) !important;
+        }
+
+
+        .form-select option {
+
+            background: #071722;
+
+            color: #e8faff;
+        }
+
+
+        .filter-btn {
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.25);
+
+            background:
+                rgba(0, 229, 255, 0.05);
+
+            color: #bdebf1;
+
+            border-radius: 10px;
+
+            padding:
+                8px 15px;
+
+            transition: 0.2s;
+        }
+
+
+        .filter-btn:hover {
+
             color: white;
-            text-decoration: none;
-            padding: 11px 18px;
-            border-radius: 8px;
-            font-weight: bold;
+
+            border-color:
+                #00e5ff;
+
+            background:
+                rgba(0, 229, 255, 0.10);
         }
 
-        .report-btn:hover {
-            background: #1d4ed8;
-        }
 
-        #message {
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
+        /* ==========================================
+           INCIDENT CARD
+           ========================================== */
 
         .incident-card {
-            background: white;
-            padding: 22px;
+
+            position: relative;
+
+            padding: 24px;
+
             margin-bottom: 18px;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+
+            border-radius: 18px;
+
+            background:
+                rgba(8, 24, 38, 0.78);
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.12);
+
+            backdrop-filter:
+                blur(16px);
+
+            transition: 0.25s;
         }
 
-        .incident-header {
+
+        .incident-card:hover {
+
+            transform:
+                translateY(-2px);
+
+            border-color:
+                rgba(0, 229, 255, 0.25);
+
+            box-shadow:
+                0 15px 35px
+                rgba(0, 0, 0, 0.20);
+        }
+
+
+        .incident-top {
+
             display: flex;
+
+            align-items: flex-start;
+
             justify-content: space-between;
-            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .incident-title {
+
+            color: #eafaff;
+
+            font-size: 1.15rem;
+
+            font-weight: 700;
+
+            margin: 0 0 5px;
+        }
+
+
+        .incident-type {
+
+            color: #00d9ef;
+
+            font-size: 0.78rem;
+
+            font-weight: 600;
+        }
+
+
+        .status-badge {
+
+            padding:
+                5px 11px;
+
+            border-radius: 20px;
+
+            font-size: 0.72rem;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        .status-pending {
+
+            color: #ffd27a;
+
+            background:
+                rgba(255, 180, 60, 0.10);
+
+            border:
+                1px solid
+                rgba(255, 180, 60, 0.20);
+        }
+
+
+        .status-progress {
+
+            color: #75dcff;
+
+            background:
+                rgba(0, 190, 255, 0.10);
+
+            border:
+                1px solid
+                rgba(0, 190, 255, 0.20);
+        }
+
+
+        .status-resolved {
+
+            color: #79f5bd;
+
+            background:
+                rgba(0, 255, 160, 0.08);
+
+            border:
+                1px solid
+                rgba(0, 255, 160, 0.18);
+        }
+
+
+        .status-default {
+
+            color: #c8d8de;
+
+            background:
+                rgba(255, 255, 255, 0.05);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.10);
+        }
+
+
+        .incident-description {
+
+            color: #8da7b1;
+
+            line-height: 1.65;
+
+            font-size: 0.9rem;
+
+            margin-bottom: 15px;
+        }
+
+
+        .incident-info {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .info-item {
+
+            padding:
+                7px 10px;
+
+            border-radius: 8px;
+
+            color: #91adb6;
+
+            background:
+                rgba(0, 229, 255, 0.035);
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.08);
+
+            font-size: 0.76rem;
+        }
+
+
+        /* ==========================================
+           LOCATION DISPLAY
+           ========================================== */
+
+        .map-box {
+
+            margin-top: 14px;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(0, 229, 255, 0.035);
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.10);
+        }
+
+
+        .map-location {
+
+            color: #bcebf1;
+
+            font-size: 0.84rem;
+
+            margin-bottom: 5px;
+        }
+
+
+        .coordinates-text {
+
+            color: #6f9da8;
+
+            font-size: 0.76rem;
+
+            margin-bottom: 10px;
+        }
+
+
+        .map-button {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            color: #00131a;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00e5ff,
+                    #00d6a0
+                );
+
+            border-radius: 9px;
+
+            padding:
+                7px 12px;
+
+            font-size: 0.76rem;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+
+        .map-button:hover {
+
+            color: #00131a;
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 6px 18px
+                rgba(0, 229, 255, 0.18);
+        }
+
+
+        .manual-location {
+
+            color: #91adb6;
+
+            font-size: 0.84rem;
+
+            margin-top: 4px;
+        }
+
+
+        /* ==========================================
+           IMAGE
+           ========================================== */
+
+        .incident-image {
+
+            width: 100%;
+
+            max-height: 320px;
+
+            object-fit: cover;
+
+            border-radius: 13px;
+
+            margin-top: 15px;
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.12);
+        }
+
+
+        /* ==========================================
+           ADMIN CONTROLS
+           ========================================== */
+
+        .admin-panel {
+
+            margin-top: 18px;
+
+            padding-top: 17px;
+
+            border-top:
+                1px solid
+                rgba(0, 229, 255, 0.08);
+        }
+
+
+        .admin-label {
+
+            color: #00d9ef;
+
+            font-size: 0.75rem;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .admin-select {
+
+            max-width: 190px;
+        }
+
+
+        .update-btn {
+
+            color: #00131a;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00e5ff,
+                    #00d6a0
+                );
+
+            border: none;
+
+            border-radius: 9px;
+
+            font-weight: 700;
+
+            padding:
+                8px 14px;
+        }
+
+
+        .delete-btn {
+
+            color: #ffbebe;
+
+            border:
+                1px solid
+                rgba(255, 70, 70, 0.28);
+
+            background:
+                rgba(255, 70, 70, 0.06);
+
+            border-radius: 9px;
+
+            padding:
+                8px 14px;
+        }
+
+
+        .delete-btn:hover {
+
+            color: white;
+
+            background:
+                rgba(255, 70, 70, 0.13);
+        }
+
+
+        /* ==========================================
+           EMPTY STATE
+           ========================================== */
+
+        .empty-state {
+
+            text-align: center;
+
+            padding: 65px 20px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(8, 24, 38, 0.60);
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.10);
+        }
+
+
+        .empty-icon {
+
+            font-size: 3rem;
+
             margin-bottom: 12px;
         }
 
-        .incident-header h3 {
-            color: #0f172a;
+
+        .empty-state h3 {
+
+            color: #dffaff;
+
+            font-size: 1.2rem;
         }
 
-        .status {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
-            background: #fef3c7;
-            color: #92400e;
+
+        .empty-state p {
+
+            color: #718c97;
+
+            font-size: 0.85rem;
         }
 
-        .incident-info {
-            margin: 8px 0;
-            color: #475569;
-        }
 
-        .description {
-            margin-top: 12px;
-            color: #334155;
-            line-height: 1.5;
-        }
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
 
-        .admin-controls {
-            margin-top: 18px;
-            padding-top: 15px;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
+        @media (max-width: 600px) {
 
-        select {
-            padding: 9px;
-            border: 1px solid #cbd5e1;
-            border-radius: 7px;
-        }
+            .main-container {
 
-        .update-btn {
-            background: #16a34a;
-            color: white;
-            border: none;
-            padding: 9px 14px;
-            border-radius: 7px;
-            cursor: pointer;
-        }
+                padding:
+                    35px 15px 50px;
+            }
 
-        .update-btn:hover {
-            background: #15803d;
-        }
 
-        .delete-btn {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 9px 14px;
-            border-radius: 7px;
-            cursor: pointer;
-        }
+            .incident-card {
 
-        .delete-btn:hover {
-            background: #b91c1c;
-        }
+                padding: 18px;
+            }
 
-        .no-incidents {
-            background: white;
-            padding: 40px;
-            text-align: center;
-            border-radius: 12px;
-            color: #64748b;
+
+            .incident-top {
+
+                flex-direction: column;
+            }
+
+
+            .brand {
+
+                font-size: 0.9rem;
+            }
+
+
+            .brand-shield {
+
+                width: 34px;
+                height: 34px;
+            }
+
+
+            .nav-btn {
+
+                padding:
+                    7px 10px;
+
+                font-size: 0.76rem;
+            }
+
         }
 
     </style>
@@ -194,49 +1043,308 @@
 <body>
 
 
-<header>
+<div class="orb orb-one"></div>
 
-    <h1>🏘️ Neighborhood Watch</h1>
-
-    <div class="user-info">
-
-        <span id="userName"></span>
-
-        <span id="userRole" class="role"></span>
-
-        <button class="logout-btn" onclick="logout()">
-            Logout
-        </button>
-
-    </div>
-
-</header>
+<div class="orb orb-two"></div>
 
 
-<div class="container">
+<!-- ==========================================
+     NAVBAR
+     ========================================== -->
 
+<nav class="navbar navbar-custom">
 
-    <div class="top-section">
+    <div class="container">
 
-        <h2>Reported Incidents</h2>
+        <a
+            class="navbar-brand brand fw-bold"
+            href="index.html">
 
-        <a href="report.html" class="report-btn">
-            + Report Incident
+            <span class="brand-shield">
+                🛡️
+            </span>
+
+            Neighborhood Watch
+
         </a>
 
-    </div>
+
+        <div class="d-flex gap-2">
+
+            <a
+                href="report.html"
+                class="btn nav-btn">
+
+                🚨 Report
+
+            </a>
 
 
-    <div id="message"></div>
+            <button
+                id="logoutButton"
+                class="btn nav-btn logout-btn">
 
+                Logout
 
-    <div id="incidentsContainer">
+            </button>
 
-        <div class="no-incidents">
-            Loading incidents...
         </div>
 
     </div>
+
+</nav>
+
+
+<!-- ==========================================
+     MAIN
+     ========================================== -->
+
+<div class="main-container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div class="security-badge">
+
+            <span class="status-dot"></span>
+
+            Incident Monitoring System
+
+        </div>
+
+
+        <h1>
+
+            Incident
+            <span>Command Center</span>
+
+        </h1>
+
+
+        <p>
+
+            Monitor, search and manage reported
+            neighborhood incidents.
+
+        </p>
+
+    </div>
+
+
+    <!-- ==========================================
+         STATISTICS
+         ========================================== -->
+
+    <div class="row g-3">
+
+
+        <div class="col-6 col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Total Incidents
+                </div>
+
+                <div
+                    id="totalCount"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-6 col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Pending
+                </div>
+
+                <div
+                    id="pendingCount"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-6 col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    In Progress
+                </div>
+
+                <div
+                    id="progressCount"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-6 col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Resolved
+                </div>
+
+                <div
+                    id="resolvedCount"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ==========================================
+         SEARCH & FILTER
+         ========================================== -->
+
+    <div class="filter-card">
+
+
+        <div class="row g-3 align-items-end">
+
+
+            <div class="col-lg-4">
+
+                <div class="filter-label">
+                    Search
+                </div>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="form-control"
+                    placeholder="Search title, location or description">
+
+            </div>
+
+
+            <div class="col-md-4 col-lg-3">
+
+                <div class="filter-label">
+                    Incident Type
+                </div>
+
+                <select
+                    id="typeFilter"
+                    class="form-select">
+
+                    <option value="">
+                        All Types
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="col-md-4 col-lg-3">
+
+                <div class="filter-label">
+                    Status
+                </div>
+
+                <select
+                    id="statusFilter"
+                    class="form-select">
+
+                    <option value="">
+                        All Statuses
+                    </option>
+
+                    <option value="Pending">
+                        Pending
+                    </option>
+
+                    <option value="In Progress">
+                        In Progress
+                    </option>
+
+                    <option value="Resolved">
+                        Resolved
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="col-md-4 col-lg-2 d-flex gap-2">
+
+                <button
+                    id="clearButton"
+                    class="filter-btn flex-fill">
+
+                    Clear
+
+                </button>
+
+
+                <button
+                    id="refreshButton"
+                    class="filter-btn flex-fill">
+
+                    ↻
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            id="resultCount"
+            class="mt-3"
+            style="color:#617e88;font-size:0.78rem;">
+
+            Loading incidents...
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ==========================================
+         INCIDENT LIST
+         ========================================== -->
+
+    <div id="incidentList"></div>
 
 
 </div>
@@ -245,363 +1353,900 @@
 <script>
 
 
-    // Get logged-in user information
+/* ==========================================
+   LOGIN CHECK
+   ========================================== */
 
-    const userName =
-        sessionStorage.getItem("userName");
+const userName =
+    localStorage.getItem("userName");
 
-    const userRole =
-        sessionStorage.getItem("userRole");
+const userRole =
+    localStorage.getItem("userRole");
 
 
-    // Check login
+if (!userName) {
 
-    if (!userName || !userRole) {
+    window.location.href =
+        "login.html";
 
-        window.location.href = "login.html";
+}
 
-    }
 
+/* ==========================================
+   VARIABLES
+   ========================================== */
 
-    // Display user information
+let allIncidents = [];
 
-    document.getElementById("userName").textContent =
-        userName;
 
-    document.getElementById("userRole").textContent =
-        userRole;
+/* ==========================================
+   LOAD INCIDENTS
+   ========================================== */
 
+async function loadIncidents() {
 
-    // Load incidents
+    const list =
+        document.getElementById("incidentList");
 
-    function loadIncidents() {
 
-        fetch("/incidents")
+    list.innerHTML =
 
-            .then(async response => {
+        '<div class="empty-state">' +
 
-                if (!response.ok) {
+        '<div class="empty-icon">⏳</div>' +
 
-                    throw new Error(
-                        "Unable to load incidents"
-                    );
+        '<h3>Loading incidents...</h3>' +
 
-                }
+        '<p>Please wait while the incident records are loaded.</p>' +
 
-                return response.json();
+        '</div>';
 
-            })
 
-            .then(incidents => {
+    try {
 
-                const container =
-                    document.getElementById(
-                        "incidentsContainer"
-                    );
+        const response =
+            await fetch("/incidents");
 
-                container.innerHTML = "";
 
+        if (!response.ok) {
 
-                if (incidents.length === 0) {
-
-                    container.innerHTML = `
-                        <div class="no-incidents">
-                            No incidents reported yet.
-                        </div>
-                    `;
-
-                    return;
-
-                }
-
-
-                incidents.forEach(incident => {
-
-                    const card =
-                        document.createElement("div");
-
-                    card.className =
-                        "incident-card";
-
-
-                    card.innerHTML = `
-
-                        <div class="incident-header">
-
-                            <h3>
-                                ${incident.title}
-                            </h3>
-
-                            <span class="status">
-                                ${incident.status}
-                            </span>
-
-                        </div>
-
-
-                        <div class="incident-info">
-                            📍 Location:
-                            ${incident.location}
-                        </div>
-
-
-                        <div class="incident-info">
-                            🚨 Type:
-                            ${incident.incidentType}
-                        </div>
-
-
-                        <div class="description">
-                            ${incident.description}
-                        </div>
-
-                    `;
-
-
-                    // ADMIN controls
-
-                    if (userRole === "ADMIN") {
-
-                        const controls =
-                            document.createElement("div");
-
-                        controls.className =
-                            "admin-controls";
-
-
-                        controls.innerHTML = `
-
-                            <select id="status-${incident.incidentId}">
-
-                                <option value="Pending">
-                                    Pending
-                                </option>
-
-                                <option value="In Progress">
-                                    In Progress
-                                </option>
-
-                                <option value="Resolved">
-                                    Resolved
-                                </option>
-
-                                <option value="Rejected">
-                                    Rejected
-                                </option>
-
-                            </select>
-
-
-                            <button
-                                class="update-btn"
-                                onclick="updateStatus(${incident.incidentId})">
-
-                                Update Status
-
-                            </button>
-
-
-                            <button
-                                class="delete-btn"
-                                onclick="deleteIncident(${incident.incidentId})">
-
-                                Delete
-
-                            </button>
-
-                        `;
-
-
-                        card.appendChild(controls);
-
-                    }
-
-
-                    container.appendChild(card);
-
-                });
-
-            })
-
-            .catch(error => {
-
-                console.error(error);
-
-                document.getElementById(
-                    "incidentsContainer"
-                ).innerHTML = `
-
-                    <div class="no-incidents">
-
-                        Unable to load incidents.
-                        Please login again.
-
-                    </div>
-
-                `;
-
-            });
-
-    }
-
-
-    // Update incident status
-
-    function updateStatus(id) {
-
-        const status =
-            document.getElementById(
-                "status-" + id
-            ).value;
-
-
-        fetch(
-            `/incidents/${id}?status=${encodeURIComponent(status)}`,
-            {
-                method: "PUT"
-            }
-        )
-
-        .then(async response => {
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "Unable to update status"
-                );
-
-            }
-
-            return response.json();
-
-        })
-
-        .then(() => {
-
-            showMessage(
-                "Incident status updated successfully!",
-                "green"
+            throw new Error(
+                "Unable to load incidents"
             );
 
-            loadIncidents();
-
-        })
-
-        .catch(error => {
-
-            console.error(error);
-
-            showMessage(
-                "You are not authorized to update incidents.",
-                "red"
-            );
-
-        });
-
-    }
-
-
-    // Delete incident
-
-    function deleteIncident(id) {
-
-        const confirmDelete =
-            confirm(
-                "Are you sure you want to delete this incident?"
-            );
-
-
-        if (!confirmDelete) {
-            return;
         }
 
 
-        fetch(`/incidents/${id}`, {
+        allIncidents =
+            await response.json();
 
-            method: "DELETE"
 
-        })
+        populateTypeFilter();
 
-        .then(async response => {
+        updateStatistics();
 
-            if (!response.ok) {
+        applyFilters();
 
-                throw new Error(
-                    "Unable to delete incident"
-                );
 
-            }
+    }
 
-            return response.text();
+    catch (error) {
 
-        })
+        list.innerHTML =
 
-        .then(() => {
+            '<div class="empty-state">' +
 
-            showMessage(
-                "Incident deleted successfully!",
-                "green"
-            );
+            '<div class="empty-icon">⚠️</div>' +
 
-            loadIncidents();
+            '<h3>Unable to load incidents</h3>' +
 
-        })
+            '<p>Make sure the server is running and try again.</p>' +
 
-        .catch(error => {
+            '</div>';
 
-            console.error(error);
+    }
 
-            showMessage(
-                "You are not authorized to delete incidents.",
-                "red"
+}
+
+
+/* ==========================================
+   TYPE FILTER
+   ========================================== */
+
+function populateTypeFilter() {
+
+    const filter =
+        document.getElementById("typeFilter");
+
+
+    const types =
+        [...new Set(
+            allIncidents
+                .map(i => i.incidentType)
+                .filter(Boolean)
+        )];
+
+
+    filter.innerHTML =
+        '<option value="">All Types</option>';
+
+
+    types.sort().forEach(type => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = type;
+
+        option.textContent = type;
+
+        filter.appendChild(option);
+
+    });
+
+}
+
+
+/* ==========================================
+   STATISTICS
+   ========================================== */
+
+function updateStatistics() {
+
+    document.getElementById("totalCount")
+        .textContent =
+        allIncidents.length;
+
+
+    document.getElementById("pendingCount")
+        .textContent =
+        allIncidents.filter(
+            i => i.status === "Pending"
+        ).length;
+
+
+    document.getElementById("progressCount")
+        .textContent =
+        allIncidents.filter(
+            i => i.status === "In Progress"
+        ).length;
+
+
+    document.getElementById("resolvedCount")
+        .textContent =
+        allIncidents.filter(
+            i => i.status === "Resolved"
+        ).length;
+
+}
+
+
+/* ==========================================
+   FILTER
+   ========================================== */
+
+function applyFilters() {
+
+    const search =
+        document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const type =
+        document
+            .getElementById("typeFilter")
+            .value;
+
+
+    const status =
+        document
+            .getElementById("statusFilter")
+            .value;
+
+
+    const filtered =
+        allIncidents.filter(incident => {
+
+
+            const matchesSearch =
+
+                !search ||
+
+                (incident.title || "")
+                    .toLowerCase()
+                    .includes(search) ||
+
+                (incident.location || "")
+                    .toLowerCase()
+                    .includes(search) ||
+
+                (incident.description || "")
+                    .toLowerCase()
+                    .includes(search);
+
+
+            const matchesType =
+                !type ||
+                incident.incidentType === type;
+
+
+            const matchesStatus =
+                !status ||
+                incident.status === status;
+
+
+            return (
+                matchesSearch &&
+                matchesType &&
+                matchesStatus
             );
 
         });
 
-    }
+
+    displayIncidents(filtered);
 
 
-    // Show message
+    document.getElementById("resultCount")
+        .textContent =
 
-    function showMessage(text, color) {
+        filtered.length
+        + " incident"
+        + (filtered.length === 1 ? "" : "s")
+        + " found";
 
-        const message =
-            document.getElementById("message");
-
-        message.textContent = text;
-
-        message.style.color = color;
-
-
-        setTimeout(() => {
-
-            message.textContent = "";
-
-        }, 3000);
-
-    }
+}
 
 
-    // Logout
+/* ==========================================
+   ESCAPE HTML
+   ========================================== */
 
-    function logout() {
+function escapeHtml(value) {
 
-        sessionStorage.clear();
+    if (value === null || value === undefined) {
 
-        window.location.href =
-            "login.html";
+        return "";
 
     }
 
 
-    // Load incidents when page opens
+    return String(value)
 
-    loadIncidents();
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ==========================================
+   STATUS CLASS
+   ========================================== */
+
+function getStatusClass(status) {
+
+    if (status === "Pending") {
+
+        return "status-pending";
+
+    }
+
+
+    if (status === "In Progress") {
+
+        return "status-progress";
+
+    }
+
+
+    if (status === "Resolved") {
+
+        return "status-resolved";
+
+    }
+
+
+    return "status-default";
+
+}
+
+
+/* ==========================================
+   DISPLAY INCIDENTS
+   ========================================== */
+
+function displayIncidents(incidents) {
+
+    const list =
+        document.getElementById("incidentList");
+
+
+    if (incidents.length === 0) {
+
+        list.innerHTML =
+
+            '<div class="empty-state">' +
+
+            '<div class="empty-icon">🔎</div>' +
+
+            '<h3>No incidents found</h3>' +
+
+            '<p>Try changing your search or filters.</p>' +
+
+            '</div>';
+
+        return;
+
+    }
+
+
+    list.innerHTML = "";
+
+
+    incidents.forEach(incident => {
+
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "incident-card";
+
+
+        const statusClass =
+            getStatusClass(
+                incident.status
+            );
+
+
+        let locationSection = "";
+
+
+        /* ======================================
+           LOCATION WITH COORDINATES
+           ====================================== */
+
+        if (
+            incident.latitude !== null &&
+            incident.latitude !== undefined &&
+            incident.longitude !== null &&
+            incident.longitude !== undefined
+        ) {
+
+
+            const latitude =
+                Number(incident.latitude);
+
+
+            const longitude =
+                Number(incident.longitude);
+
+
+            const mapUrl =
+                "https://www.google.com/maps?q="
+                + encodeURIComponent(
+                    latitude + "," + longitude
+                );
+
+
+            locationSection =
+
+                '<div class="map-box">' +
+
+                '<div class="map-location">' +
+
+                '📍 <strong>Location:</strong> ' +
+
+                escapeHtml(
+                    incident.location ||
+                    "Location captured"
+                ) +
+
+                '</div>' +
+
+                '<div class="coordinates-text">' +
+
+                '🌐 Coordinates: ' +
+
+                latitude.toFixed(6) +
+
+                ', ' +
+
+                longitude.toFixed(6) +
+
+                '</div>' +
+
+                '<a ' +
+
+                'href="' +
+                mapUrl +
+                '" ' +
+
+                'target="_blank" ' +
+
+                'rel="noopener noreferrer" ' +
+
+                'class="map-button">' +
+
+                '🗺️ View on Map' +
+
+                '</a>' +
+
+                '</div>';
+
+
+        }
+
+        else {
+
+
+            locationSection =
+
+                '<div class="manual-location">' +
+
+                '📍 <strong>Location:</strong> ' +
+
+                escapeHtml(
+                    incident.location ||
+                    "Not provided"
+                ) +
+
+                '</div>';
+
+        }
+
+
+        /* ======================================
+           IMAGE
+           ====================================== */
+
+        let imageSection = "";
+
+
+        if (incident.imageType) {
+
+            imageSection =
+
+                '<img ' +
+
+                'src="/incidents/' +
+                incident.incidentId +
+                '/image" ' +
+
+                'class="incident-image" ' +
+
+                'alt="Incident evidence">';
+
+        }
+
+
+        /* ======================================
+           ADMIN CONTROLS
+           ====================================== */
+
+        let adminSection = "";
+
+
+        if (userRole === "ADMIN") {
+
+
+            adminSection =
+
+                '<div class="admin-panel">' +
+
+                '<div class="admin-label">' +
+
+                'Admin Controls' +
+
+                '</div>' +
+
+
+                '<div class="d-flex flex-wrap gap-2">' +
+
+
+                '<select ' +
+
+                'class="form-select admin-select" ' +
+
+                'id="status-' +
+                incident.incidentId +
+                '">' +
+
+
+                '<option value="Pending" ' +
+
+                (
+                    incident.status === "Pending"
+                        ? "selected"
+                        : ""
+                ) +
+
+                '>Pending</option>' +
+
+
+                '<option value="In Progress" ' +
+
+                (
+                    incident.status === "In Progress"
+                        ? "selected"
+                        : ""
+                ) +
+
+                '>In Progress</option>' +
+
+
+                '<option value="Resolved" ' +
+
+                (
+                    incident.status === "Resolved"
+                        ? "selected"
+                        : ""
+                ) +
+
+                '>Resolved</option>' +
+
+
+                '</select>' +
+
+
+                '<button ' +
+
+                'class="update-btn" ' +
+
+                'onclick="updateStatus(' +
+                incident.incidentId +
+                ')">' +
+
+                'Update Status' +
+
+                '</button>' +
+
+
+                '<button ' +
+
+                'class="delete-btn" ' +
+
+                'onclick="deleteIncident(' +
+                incident.incidentId +
+                ')">' +
+
+                'Delete' +
+
+                '</button>' +
+
+
+                '</div>' +
+
+                '</div>';
+
+        }
+
+
+        /* ======================================
+           COMPLETE CARD
+           ====================================== */
+
+        card.innerHTML =
+
+
+            '<div class="incident-top">' +
+
+
+            '<div>' +
+
+            '<h3 class="incident-title">' +
+
+            escapeHtml(
+                incident.title
+            ) +
+
+            '</h3>' +
+
+
+            '<div class="incident-type">' +
+
+            '● ' +
+
+            escapeHtml(
+                incident.incidentType ||
+                "Other"
+            ) +
+
+            '</div>' +
+
+            '</div>' +
+
+
+            '<span class="status-badge ' +
+            statusClass +
+            '">' +
+
+            escapeHtml(
+                incident.status ||
+                "Pending"
+            ) +
+
+            '</span>' +
+
+
+            '</div>' +
+
+
+            '<div class="incident-info">' +
+
+            '<div class="info-item">' +
+
+            '🆔 ID: ' +
+
+            escapeHtml(
+                incident.incidentId
+            ) +
+
+            '</div>' +
+
+
+            '</div>' +
+
+
+            '<div class="incident-description">' +
+
+            escapeHtml(
+                incident.description
+            ) +
+
+            '</div>' +
+
+
+            locationSection +
+
+
+            imageSection +
+
+
+            adminSection;
+
+
+        list.appendChild(card);
+
+    });
+
+}
+
+
+/* ==========================================
+   UPDATE STATUS
+   ========================================== */
+
+async function updateStatus(id) {
+
+    const select =
+        document.getElementById(
+            "status-" + id
+        );
+
+
+    const status =
+        select.value;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/incidents/"
+                + id
+                + "?status="
+                + encodeURIComponent(status),
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to update status"
+            );
+
+        }
+
+
+        alert(
+            "Incident status updated successfully."
+        );
+
+
+        loadIncidents();
+
+    }
+
+    catch (error) {
+
+        alert(
+            "Unable to update incident status."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   DELETE INCIDENT
+   ========================================== */
+
+async function deleteIncident(id) {
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this incident?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/incidents/" + id,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to delete incident"
+            );
+
+        }
+
+
+        alert(
+            "Incident deleted successfully."
+        );
+
+
+        loadIncidents();
+
+    }
+
+    catch (error) {
+
+        alert(
+            "Unable to delete incident."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   SEARCH EVENTS
+   ========================================== */
+
+document
+    .getElementById("searchInput")
+    .addEventListener(
+        "input",
+        applyFilters
+    );
+
+
+document
+    .getElementById("typeFilter")
+    .addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+document
+    .getElementById("statusFilter")
+    .addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+/* ==========================================
+   CLEAR FILTERS
+   ========================================== */
+
+document
+    .getElementById("clearButton")
+    .addEventListener(
+        "click",
+        function() {
+
+            document
+                .getElementById("searchInput")
+                .value = "";
+
+            document
+                .getElementById("typeFilter")
+                .value = "";
+
+            document
+                .getElementById("statusFilter")
+                .value = "";
+
+            applyFilters();
+
+        }
+    );
+
+
+/* ==========================================
+   REFRESH
+   ========================================== */
+
+document
+    .getElementById("refreshButton")
+    .addEventListener(
+        "click",
+        loadIncidents
+    );
+
+
+/* ==========================================
+   LOGOUT
+   ========================================== */
+
+document
+    .getElementById("logoutButton")
+    .addEventListener(
+        "click",
+        function() {
+
+            localStorage.removeItem("userId");
+
+            localStorage.removeItem("userName");
+
+            localStorage.removeItem("userEmail");
+
+            localStorage.removeItem("userRole");
+
+            localStorage.removeItem("verificationEmail");
+
+
+            window.location.href =
+                "login.html";
+
+        }
+    );
+
+
+/* ==========================================
+   INITIAL LOAD
+   ========================================== */
+
+loadIncidents();
 
 
 </script>
 
-
 </body>
-
 </html>

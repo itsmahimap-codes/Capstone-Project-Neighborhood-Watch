@@ -3,15 +3,11 @@ package NeighborhoodWatch.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -26,7 +22,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration)
             throws Exception {
-
         return configuration.getAuthenticationManager();
     }
 
@@ -39,48 +34,42 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
 
-                // Allow authentication endpoints
+                // User registration, login and OTP
                 .requestMatchers("/users/**").permitAll()
 
-                // Allow static pages
+                // Public HTML pages
                 .requestMatchers(
-    "/",
-    "/index.html",
-    "/login.html",
-    "/register.html",
-    "/verify-otp.html",
-    "/incidents.html",
-    "/report.html",
-    "/css/**",
-    "/js/**"
-).permitAll()
+                    "/",
+                    "/index.html",
+                    "/login.html",
+                    "/register.html",
+                    "/verify-otp.html",
+                    "/incidents.html",
+                    "/report.html",
+                    "/css/**",
+                    "/js/**"
+                ).permitAll()
 
-                // ADMIN ONLY
-                .requestMatchers(
-                    HttpMethod.PUT,
-                    "/incidents/**"
-                ).hasRole("ADMIN")
+                // 🔴 FIX: incidents.html fetches GET /incidents
+                .requestMatchers(HttpMethod.GET, "/incidents").permitAll()
 
-                .requestMatchers(
-                    HttpMethod.DELETE,
-                    "/incidents/**"
-                ).hasRole("ADMIN")
+                // Admin only
+                .requestMatchers(HttpMethod.PUT, "/incidents/**")
+                    .hasRole("ADMIN")
 
-                // Logged-in users
-                .requestMatchers(
-                    HttpMethod.POST,
-                    "/incidents/report"
-                ).authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/incidents/**")
+                    .hasRole("ADMIN")
 
-                .requestMatchers(
-                    HttpMethod.GET,
-                    "/incidents"
-                ).authenticated()
+                // Logged-in users only
+                .requestMatchers(HttpMethod.POST, "/incidents/report")
+                    .authenticated()
 
+                // Everything else requires authentication
                 .anyRequest().authenticated()
             )
 
             .formLogin(form -> form.disable())
+
             .httpBasic(basic -> basic.disable());
 
         return http.build();

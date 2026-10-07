@@ -1,122 +1,1949 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Neighborhood Watch</title>
 
-    <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #e8faff;
+
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(0, 229, 255, 0.12),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(0, 255, 200, 0.10),
+                    transparent 30%
+                ),
+                #06111c;
+
+            overflow-x: hidden;
+        }
+
+
+        /* ==========================================
+           ANIMATED SECURITY GRID
+           ========================================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 229, 255, 0.045) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0, 229, 255, 0.045) 1px,
+                    transparent 1px
+                );
+
+            background-size: 45px 45px;
+
+            animation:
+                gridMove 18s linear infinite;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+
+        @keyframes gridMove {
+
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(45px, 45px);
+            }
+
+        }
+
+
+        /* ==========================================
+           FLOATING ORBS
+           ========================================== */
+
+        .orb {
+
+            position: fixed;
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            z-index: 0;
+
+            filter: blur(2px);
+        }
+
+
+        .orb-one {
+
+            width: 240px;
+            height: 240px;
+
+            top: 80px;
+            left: -100px;
+
+            background:
+                rgba(0, 229, 255, 0.08);
+
+            animation:
+                floatOne 8s ease-in-out infinite;
+        }
+
+
+        .orb-two {
+
+            width: 320px;
+            height: 320px;
+
+            right: -130px;
+            bottom: -130px;
+
+            background:
+                rgba(0, 255, 180, 0.06);
+
+            animation:
+                floatTwo 10s ease-in-out infinite;
+        }
+
+
+        .orb-three {
+
+            width: 130px;
+            height: 130px;
+
+            top: 48%;
+            right: 12%;
+
+            background:
+                rgba(0, 190, 255, 0.035);
+
+            animation:
+                floatThree 7s ease-in-out infinite;
+        }
+
+
+        @keyframes floatOne {
+
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(35px);
+            }
+
+        }
+
+
+        @keyframes floatTwo {
+
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(-30px, -25px);
+            }
+
+        }
+
+
+        @keyframes floatThree {
+
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(-15px, 25px);
+            }
+
+        }
+
+
+        /* ==========================================
+           NAVBAR
+           ========================================== */
+
+        .navbar-custom {
+
+            position: relative;
+
+            z-index: 10;
+
+            background:
+                rgba(3, 14, 25, 0.78);
+
+            backdrop-filter:
+                blur(18px);
+
+            border-bottom:
+                1px solid rgba(0, 229, 255, 0.15);
+
+            box-shadow:
+                0 5px 25px rgba(0, 0, 0, 0.25);
+        }
+
+
+        .brand {
+
+            color: #e9fbff !important;
+
+            font-size: 1.15rem;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        .brand-shield {
+
+            display: inline-flex;
+
+            width: 40px;
+            height: 40px;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            margin-right: 8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #00d9ff,
+                    #00a88f
+                );
+
+            box-shadow:
+                0 0 18px
+                rgba(0, 229, 255, 0.45);
+
+            animation:
+                shieldGlow 3s ease-in-out infinite;
+        }
+
+
+        @keyframes shieldGlow {
+
+            0%, 100% {
+                box-shadow:
+                    0 0 15px
+                    rgba(0, 229, 255, 0.35);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 28px
+                    rgba(0, 229, 255, 0.65);
+            }
+
+        }
+
+
+        .nav-btn {
+
+            border:
+                1px solid rgba(0, 229, 255, 0.35);
+
+            color: #dffaff;
+
+            background:
+                rgba(0, 229, 255, 0.05);
+
+            border-radius: 10px;
+
+            padding: 8px 16px;
+
+            transition: 0.25s;
+        }
+
+
+        .nav-btn:hover {
+
+            color: white;
+
+            border-color: #00e5ff;
+
+            background:
+                rgba(0, 229, 255, 0.12);
+
+            box-shadow:
+                0 0 18px
+                rgba(0, 229, 255, 0.18);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .nav-register {
+
+            color: #00131a;
+
+            border: none;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00e5ff,
+                    #00d6a0
+                );
+
+            font-weight: 650;
+        }
+
+
+        .nav-register:hover {
+
+            color: #00131a;
+
+            border: none;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #19eaff,
+                    #13e2ad
+                );
+
+            box-shadow:
+                0 0 20px
+                rgba(0, 229, 255, 0.28);
+        }
+
+
+        /* ==========================================
+           HERO
+           ========================================== */
+
+        .hero {
+
+            position: relative;
+
+            z-index: 2;
+
+            min-height: 680px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding:
+                80px 20px 70px;
+        }
+
+
+        .hero-container {
+
+            max-width: 1180px;
+
+            width: 100%;
+
+            margin: auto;
+        }
+
+
+        .hero-content {
+
+            padding-right: 20px;
+        }
+
+
+        .security-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                7px 15px;
+
+            border-radius: 30px;
+
+            border:
+                1px solid rgba(0, 229, 255, 0.28);
+
+            background:
+                rgba(0, 229, 255, 0.06);
+
+            color: #6fefff;
+
+            font-size: 0.82rem;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 20px;
+        }
+
+
+        .status-dot {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background:
+                #00e5a0;
+
+            box-shadow:
+                0 0 10px #00e5a0;
+
+            animation:
+                pulse 1.8s infinite;
+        }
+
+
+        @keyframes pulse {
+
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.75);
+            }
+
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(
+                    2.8rem,
+                    6vw,
+                    5.2rem
+                );
+
+            line-height: 1.05;
+
+            font-weight: 750;
+
+            letter-spacing: -2px;
+
+            margin-bottom: 22px;
+
+            color: #f2fcff;
+        }
+
+
+        .hero h1 span {
+
+            color: #00e5ff;
+
+            text-shadow:
+                0 0 25px
+                rgba(0, 229, 255, 0.3);
+        }
+
+
+        .hero-description {
+
+            max-width: 620px;
+
+            color: #8ea8b5;
+
+            font-size: 1.08rem;
+
+            line-height: 1.8;
+
+            margin-bottom: 32px;
+        }
+
+
+        /* ==========================================
+           HERO BUTTONS
+           ========================================== */
+
+        .hero-buttons {
+
+            display: flex;
+
+            gap: 13px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .primary-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 52px;
+
+            padding:
+                0 25px;
+
+            border-radius: 12px;
+
+            border: none;
+
+            color: #00131a;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00e5ff,
+                    #00d6a0
+                );
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 229, 255, 0.16);
+
+            transition: 0.25s;
+        }
+
+
+        .primary-button:hover {
+
+            color: #00131a;
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 15px 38px
+                rgba(0, 229, 255, 0.28);
+        }
+
+
+        .secondary-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 52px;
+
+            padding:
+                0 25px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid rgba(0, 229, 255, 0.3);
+
+            color: #bceef4;
+
+            background:
+                rgba(0, 229, 255, 0.045);
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: 0.25s;
+        }
+
+
+        .secondary-button:hover {
+
+            color: white;
+
+            border-color:
+                #00e5ff;
+
+            background:
+                rgba(0, 229, 255, 0.1);
+
+            transform:
+                translateY(-3px);
+        }
+
+
+        /* ==========================================
+           HERO VISUAL
+           ========================================== */
+
+        .security-visual {
+
+            position: relative;
+
+            min-height: 440px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .visual-ring {
+
+            position: absolute;
+
+            width: 390px;
+            height: 390px;
+
+            border-radius: 50%;
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.14);
+
+            box-shadow:
+                0 0 50px
+                rgba(0, 229, 255, 0.04);
+
+            animation:
+                rotateRing 25s linear infinite;
+        }
+
+
+        .visual-ring::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 13px;
+            height: 13px;
+
+            border-radius: 50%;
+
+            background:
+                #00e5ff;
+
+            box-shadow:
+                0 0 20px
+                #00e5ff;
+
+            top: 27px;
+
+            left: 50%;
+        }
+
+
+        .visual-ring-two {
+
+            position: absolute;
+
+            width: 285px;
+            height: 285px;
+
+            border-radius: 50%;
+
+            border:
+                1px dashed
+                rgba(0, 229, 255, 0.18);
+
+            animation:
+                rotateRingReverse 18s linear infinite;
+        }
+
+
+        @keyframes rotateRing {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        @keyframes rotateRingReverse {
+
+            from {
+                transform: rotate(360deg);
+            }
+
+            to {
+                transform: rotate(0deg);
+            }
+
+        }
+
+
+        .shield-core {
+
+            position: relative;
+
+            z-index: 3;
+
+            width: 190px;
+            height: 215px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            clip-path:
+                polygon(
+                    50% 0%,
+                    90% 15%,
+                    90% 55%,
+                    75% 78%,
+                    50% 100%,
+                    25% 78%,
+                    10% 55%,
+                    10% 15%
+                );
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(0, 229, 255, 0.22),
+                    rgba(0, 166, 140, 0.18)
+                );
+
+            filter:
+                drop-shadow(
+                    0 0 30px
+                    rgba(0, 229, 255, 0.25)
+                );
+
+            animation:
+                shieldFloat 4s ease-in-out infinite;
+        }
+
+
+        .shield-inner {
+
+            width: 130px;
+            height: 150px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            clip-path:
+                polygon(
+                    50% 0%,
+                    90% 15%,
+                    90% 55%,
+                    75% 78%,
+                    50% 100%,
+                    25% 78%,
+                    10% 55%,
+                    10% 15%
+                );
+
+            background:
+                rgba(4, 18, 30, 0.85);
+
+            font-size: 4.2rem;
+
+            filter:
+                drop-shadow(
+                    0 0 12px
+                    rgba(0, 229, 255, 0.45)
+                );
+        }
+
+
+        @keyframes shieldFloat {
+
+            0%, 100% {
+                transform:
+                    translateY(0);
+            }
+
+            50% {
+                transform:
+                    translateY(-12px);
+            }
+
+        }
+
+
+        /* ==========================================
+           NETWORK NODES
+           ========================================== */
+
+        .network-node {
+
+            position: absolute;
+
+            width: 10px;
+            height: 10px;
+
+            border-radius: 50%;
+
+            background:
+                #00e5ff;
+
+            box-shadow:
+                0 0 15px
+                #00e5ff;
+
+            animation:
+                nodePulse 2s infinite;
+        }
+
+
+        .node-one {
+            top: 70px;
+            left: 20%;
+        }
+
+
+        .node-two {
+            top: 24%;
+            right: 10%;
+            animation-delay: 0.5s;
+        }
+
+
+        .node-three {
+            bottom: 18%;
+            right: 17%;
+            animation-delay: 1s;
+        }
+
+
+        .node-four {
+            bottom: 8%;
+            left: 20%;
+            animation-delay: 1.5s;
+        }
+
+
+        @keyframes nodePulse {
+
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: scale(1.7);
+                opacity: 1;
+            }
+
+        }
+
+
+        /* ==========================================
+           FEATURES
+           ========================================== */
+
+        .features-section {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 1180px;
+
+            margin: auto;
+
+            padding:
+                70px 20px 90px;
+        }
+
+
+        .section-heading {
+
+            text-align: center;
+
+            margin-bottom: 40px;
+        }
+
+
+        .section-heading h2 {
+
+            color: #edfaff;
+
+            font-size:
+                clamp(
+                    1.8rem,
+                    4vw,
+                    2.5rem
+                );
+
+            margin-bottom: 10px;
+        }
+
+
+        .section-heading h2 span {
+
+            color: #00e5ff;
+        }
+
+
+        .section-heading p {
+
+            color: #78929d;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            line-height: 1.7;
+        }
+
+
+        .feature-card {
+
+            height: 100%;
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(8, 24, 38, 0.72);
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.13);
+
+            backdrop-filter:
+                blur(16px);
+
+            transition: 0.3s;
+        }
+
+
+        .feature-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(0, 229, 255, 0.32);
+
+            box-shadow:
+                0 18px 35px
+                rgba(0, 0, 0, 0.2);
+        }
+
+
+        .feature-icon {
+
+            width: 50px;
+            height: 50px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background:
+                rgba(0, 229, 255, 0.08);
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.15);
+
+            font-size: 1.4rem;
+
+            margin-bottom: 18px;
+        }
+
+
+        .feature-card h3 {
+
+            color: #dffaff;
+
+            font-size: 1.05rem;
+
+            margin-bottom: 9px;
+        }
+
+
+        .feature-card p {
+
+            color: #78939e;
+
+            font-size: 0.87rem;
+
+            line-height: 1.65;
+
+            margin: 0;
+        }
+
+
+        /* ==========================================
+           HOW IT WORKS
+           ========================================== */
+
+        .how-section {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 1000px;
+
+            margin: auto;
+
+            padding:
+                20px 20px 90px;
+        }
+
+
+        .step-card {
+
+            position: relative;
+
+            text-align: center;
+
+            padding: 20px;
+        }
+
+
+        .step-number {
+
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin: auto auto 18px;
+
+            border-radius: 50%;
+
+            color: #00131a;
+
+            font-size: 1.15rem;
+
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #00e5ff,
+                    #00d6a0
+                );
+
+            box-shadow:
+                0 0 22px
+                rgba(0, 229, 255, 0.18);
+        }
+
+
+        .step-card h3 {
+
+            color: #dffaff;
+
+            font-size: 1rem;
+
+            margin-bottom: 8px;
+        }
+
+
+        .step-card p {
+
+            color: #78939e;
+
+            font-size: 0.84rem;
+
+            line-height: 1.6;
+        }
+
+
+        /* ==========================================
+           CTA
+           ========================================== */
+
+        .cta-section {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 1050px;
+
+            margin: auto;
+
+            padding:
+                0 20px 90px;
+        }
+
+
+        .cta-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            text-align: center;
+
+            padding:
+                55px 30px;
+
+            border-radius: 23px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 229, 255, 0.08),
+                    rgba(0, 190, 150, 0.06)
+                );
+
+            border:
+                1px solid
+                rgba(0, 229, 255, 0.18);
+
+            backdrop-filter:
+                blur(18px);
+        }
+
+
+        .cta-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 250px;
+            height: 250px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(0, 229, 255, 0.07);
+
+            filter: blur(30px);
+
+            left: -100px;
+            top: -120px;
+        }
+
+
+        .cta-card h2 {
+
+            position: relative;
+
+            color: #effcff;
+
+            font-size:
+                clamp(
+                    1.7rem,
+                    4vw,
+                    2.4rem
+                );
+
+            margin-bottom: 12px;
+        }
+
+
+        .cta-card p {
+
+            position: relative;
+
+            color: #89a4ae;
+
+            max-width: 620px;
+
+            margin:
+                0 auto 25px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+
+        footer {
+
+            position: relative;
+
+            z-index: 2;
+
+            padding:
+                25px 20px;
+
+            border-top:
+                1px solid
+                rgba(0, 229, 255, 0.08);
+
+            text-align: center;
+
+            color: #607984;
+
+            font-size: 0.8rem;
+
+            background:
+                rgba(3, 12, 21, 0.65);
+        }
+
+
+        footer strong {
+
+            color: #8bdde6;
+        }
+
+
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
+
+        @media (max-width: 991px) {
+
+            .hero {
+
+                padding-top: 55px;
+
+                text-align: center;
+            }
+
+
+            .hero-content {
+
+                padding-right: 0;
+            }
+
+
+            .hero-description {
+
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+
+            .hero-buttons {
+
+                justify-content: center;
+            }
+
+
+            .security-visual {
+
+                min-height: 380px;
+
+                margin-top: 25px;
+            }
+
+
+            .visual-ring {
+
+                width: 320px;
+                height: 320px;
+            }
+
+
+            .visual-ring-two {
+
+                width: 235px;
+                height: 235px;
+            }
+
+        }
+
+
+        @media (max-width: 768px) {
+
+            .hero {
+
+                min-height: auto;
+
+                padding:
+                    50px 15px 45px;
+            }
+
+
+            .hero h1 {
+
+                font-size: 2.7rem;
+
+                letter-spacing: -1px;
+            }
+
+
+            .hero-description {
+
+                font-size: 0.96rem;
+            }
+
+
+            .security-visual {
+
+                min-height: 320px;
+            }
+
+
+            .visual-ring {
+
+                width: 270px;
+                height: 270px;
+            }
+
+
+            .visual-ring-two {
+
+                width: 200px;
+                height: 200px;
+            }
+
+
+            .shield-core {
+
+                width: 145px;
+                height: 170px;
+            }
+
+
+            .shield-inner {
+
+                width: 100px;
+                height: 120px;
+
+                font-size: 3.2rem;
+            }
+
+
+            .features-section,
+            .how-section {
+
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+
+            .nav-btn {
+
+                padding:
+                    7px 10px;
+
+                font-size: 0.78rem;
+            }
+
+
+            .brand {
+
+                font-size: 0.9rem;
+            }
+
+
+            .brand-shield {
+
+                width: 34px;
+                height: 34px;
+            }
+
+        }
+
+
+        @media (max-width: 450px) {
+
+            .hero h1 {
+
+                font-size: 2.25rem;
+            }
+
+
+            .hero-buttons {
+
+                flex-direction: column;
+            }
+
+
+            .primary-button,
+            .secondary-button {
+
+                width: 100%;
+            }
+
+
+            .security-visual {
+
+                min-height: 280px;
+            }
+
+
+            .visual-ring {
+
+                width: 230px;
+                height: 230px;
+            }
+
+
+            .visual-ring-two {
+
+                width: 170px;
+                height: 170px;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-<!-- Navigation -->
-<nav class="navbar navbar-dark bg-dark">
+
+<!-- BACKGROUND EFFECTS -->
+
+<div class="orb orb-one"></div>
+<div class="orb orb-two"></div>
+<div class="orb orb-three"></div>
+
+
+<!-- ==========================================
+     NAVBAR
+     ========================================== -->
+
+<nav class="navbar navbar-custom">
+
     <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">
-            🛡️ Neighborhood Watch
+
+        <a
+            class="navbar-brand brand fw-bold"
+            href="index.html">
+
+            <span class="brand-shield">
+                🛡️
+            </span>
+
+            Neighborhood Watch
+
         </a>
 
-        <div>
-            <a href="login.html" class="btn btn-outline-light me-2">
+
+        <div class="d-flex gap-2">
+
+            <a
+                href="login.html"
+                class="btn nav-btn">
+
                 Login
+
             </a>
 
-            <a href="register.html" class="btn btn-warning">
+
+            <a
+                href="register.html"
+                class="btn nav-btn nav-register">
+
                 Register
+
             </a>
+
         </div>
+
     </div>
+
 </nav>
 
 
-<!-- Hero Section -->
-<section class="bg-light py-5">
-    <div class="container text-center py-5">
+<!-- ==========================================
+     HERO
+     ========================================== -->
 
-        <h1 class="display-4 fw-bold">
-            Report. Track. Resolve.
-        </h1>
+<section class="hero">
 
-        <p class="lead mt-3">
-            A centralized platform for reporting, tracking and managing neighborhood incidents.
-        </p>
+    <div class="hero-container">
 
-        <div class="mt-4">
-            <a href="report.html" class="btn btn-danger btn-lg me-2">
-                🚨 Report Incident
-            </a>
+        <div class="row align-items-center">
 
-            <a href="incidents.html" class="btn btn-primary btn-lg">
-                📋 View Incidents
-            </a>
+
+            <!-- HERO TEXT -->
+
+            <div class="col-lg-7">
+
+                <div class="hero-content">
+
+
+                    <div class="security-badge">
+
+                        <span class="status-dot"></span>
+
+                        Community Safety Network
+
+                    </div>
+
+
+                    <h1>
+
+                        Safer
+                        <span>
+                            Neighborhoods.
+                        </span>
+
+                        <br>
+
+                        Stronger
+                        Communities.
+
+                    </h1>
+
+
+                    <p class="hero-description">
+
+                        Neighborhood Watch provides a secure digital
+                        platform for communities to report incidents,
+                        share important information, and monitor
+                        neighborhood safety in one connected system.
+
+                    </p>
+
+
+                    <div class="hero-buttons">
+
+                        <a
+                            href="report.html"
+                            class="primary-button">
+
+                            🚨 Report an Incident
+
+                        </a>
+
+
+                        <a
+                            href="incidents.html"
+                            class="secondary-button">
+
+                            📊 View Incidents
+
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- SECURITY VISUAL -->
+
+            <div class="col-lg-5">
+
+                <div class="security-visual">
+
+
+                    <div class="visual-ring"></div>
+
+                    <div class="visual-ring-two"></div>
+
+
+                    <div class="network-node node-one"></div>
+
+                    <div class="network-node node-two"></div>
+
+                    <div class="network-node node-three"></div>
+
+                    <div class="network-node node-four"></div>
+
+
+                    <div class="shield-core">
+
+                        <div class="shield-inner">
+
+                            🛡️
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
         </div>
 
     </div>
+
 </section>
 
 
-<!-- Features -->
-<section class="py-5">
-    <div class="container">
+<!-- ==========================================
+     FEATURES
+     ========================================== -->
 
-        <h2 class="text-center mb-5">
-            How Neighborhood Watch Works
+<section class="features-section">
+
+
+    <div class="section-heading">
+
+        <h2>
+
+            Built for
+            <span>Community Safety</span>
+
         </h2>
 
-        <div class="row g-4">
 
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <h3>🚨 Report</h3>
-                        <p>
-                            Submit an incident with relevant details such as type, location, and description.
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <p>
 
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <h3>🔎 Track</h3>
-                        <p>
-                            View reported incidents and monitor their
-                            current status.
-                        </p>
-                    </div>
-                </div>
-            </div>
+            A centralized platform that connects citizens
+            and administrators to improve incident awareness
+            and response.
 
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <h3>✅ Resolve</h3>
-                        <p>
-                            Manage incident records through status 
-                            updates and deletion.
-                        </p>
-                    </div>
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+        <!-- FEATURE 1 -->
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🚨
                 </div>
+
+                <h3>
+                    Incident Reporting
+                </h3>
+
+                <p>
+
+                    Report neighborhood incidents with
+                    important details such as type,
+                    location, description and evidence.
+
+                </p>
+
             </div>
 
         </div>
 
+
+        <!-- FEATURE 2 -->
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📊
+                </div>
+
+                <h3>
+                    Incident Dashboard
+                </h3>
+
+                <p>
+
+                    View reported incidents in one
+                    centralized dashboard with status
+                    tracking and filtering.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FEATURE 3 -->
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📷
+                </div>
+
+                <h3>
+                    Evidence Support
+                </h3>
+
+                <p>
+
+                    Attach supporting images to incident
+                    reports so administrators can better
+                    understand reported situations.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FEATURE 4 -->
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🔐
+                </div>
+
+                <h3>
+                    Secure Access
+                </h3>
+
+                <p>
+
+                    User authentication, email verification,
+                    encrypted passwords and role-based
+                    administrator controls.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
     </div>
+
 </section>
 
 
-<!-- Footer -->
-<footer class="bg-dark text-white text-center py-3">
-    <p class="mb-0">
-        © 2026 Neighborhood Watch | Incident Reporting System
-    </p>
+<!-- ==========================================
+     HOW IT WORKS
+     ========================================== -->
+
+<section class="how-section">
+
+
+    <div class="section-heading">
+
+        <h2>
+
+            How
+            <span>Neighborhood Watch</span>
+            Works
+
+        </h2>
+
+
+        <p>
+
+            Simple reporting. Centralized monitoring.
+            Better community awareness.
+
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+        <!-- STEP 1 -->
+
+        <div class="col-md-4">
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <h3>
+                    Report
+                </h3>
+
+                <p>
+
+                    A registered user submits an incident
+                    with the relevant information and
+                    optional evidence image.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEP 2 -->
+
+        <div class="col-md-4">
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <h3>
+                    Monitor
+                </h3>
+
+                <p>
+
+                    Incidents are stored in the system and
+                    displayed through the centralized
+                    incident dashboard.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEP 3 -->
+
+        <div class="col-md-4">
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <h3>
+                    Respond
+                </h3>
+
+                <p>
+
+                    Authorized administrators can update
+                    incident statuses and manage incident
+                    records.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ==========================================
+     CALL TO ACTION
+     ========================================== -->
+
+<section class="cta-section">
+
+    <div class="cta-card">
+
+
+        <h2>
+
+            Help Make Your
+            <span style="color:#00e5ff;">
+                Neighborhood Safer
+            </span>
+
+        </h2>
+
+
+        <p>
+
+            Stay informed, report incidents responsibly,
+            and contribute to a connected community safety
+            network.
+
+        </p>
+
+
+        <a
+            href="register.html"
+            class="primary-button">
+
+            🛡️ Join Neighborhood Watch
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+<!-- ==========================================
+     FOOTER
+     ========================================== -->
+
+<footer>
+
+    <div>
+
+        🛡️
+        <strong>Neighborhood Watch</strong>
+
+        &nbsp;•&nbsp;
+
+        Community Safety & Incident Reporting Platform
+
+    </div>
+
+
+    <div class="mt-2">
+
+        Secure • Connected • Community Driven
+
+    </div>
+
 </footer>
+
 
 </body>
 </html>
